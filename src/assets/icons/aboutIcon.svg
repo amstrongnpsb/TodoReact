@@ -1,0 +1,11 @@
+<?xml version="1.0" encoding="iso-8859-1"?>
+<!-- Uploaded to: SVG Repo, www.svgrepo.com, Generator: SVG Repo Mixer Tools -->
+<!DOCTYPE svg PUBLIC "-//W3C//DTD SVG 1.1//EN" "http://www.w3.org/Graphics/SVG/1.1/DTD/svg11.dtd">
+<svg fill="#000000" height="800px" width="800px" version="1.1" id="Capa_1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" 
+	 viewBox="0 0 512 512" xml:space="preserve">
+<path d="M480,0H96C78.328,0,64,14.328,64,32H32C14.328,32,0,46.328,0,64s14.328,32,32,32h32v64H32c-17.672,0-32,14.328-32,32
+	s14.328,32,32,32h32v64H32c-17.672,0-32,14.328-32,32s14.328,32,32,32h32v64H32c-17.672,0-32,14.328-32,32s14.328,32,32,32h32
+	c0,17.672,14.328,32,32,32h384c17.672,0,32-14.328,32-32V32C512,14.328,497.672,0,480,0z M304,128c26.508,0,48,21.488,48,48
+	c0,26.508-21.492,48-48,48c-26.512,0-48-21.492-48-48C256,149.488,277.488,128,304,128z M400,384H208v-64
+	c0-41.125,46.848-48.727,64-64h64c17.152,15.273,64,22.875,64,64V384z"/>
+</svg>
