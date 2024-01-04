@@ -3,7 +3,7 @@ import ListIcon from "../assets/icons/listIcon.svg";
 import Navbarlink from "../elements/navlink/Index";
 import SettingsIcon from "../assets/icons/settingsIcon.svg";
 import AboutIcon from "../assets/icons/aboutIcon.svg";
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import HamburgerButton from "../elements/buttons/HamburgerButton";
 import { motion } from "framer-motion";
 const Navbar = () => {
@@ -25,6 +25,21 @@ const Navbar = () => {
       icon: AboutIcon,
     },
   ];
+  useEffect(() => {
+    const boxBlock = document.getElementsByClassName("boxBlock")[0];
+    if (isOpen) {
+      boxBlock.style.display = "block";
+    } else {
+      boxBlock.style.display = "none";
+    }
+  }, [isOpen]);
+
+  document.addEventListener("click", (event) => {
+    const boxBlock = document.getElementsByClassName("boxBlock")[0];
+    if (event.target === boxBlock) {
+      setIsOpen(!isOpen);
+    }
+  });
   return (
     <motion.div
       variants={{
@@ -39,7 +54,7 @@ const Navbar = () => {
       animate={isOpen ? "open" : "closed"}
       initial={{ x: -100 }}
       transition={{ duration: 0.3 }}
-      className="h-[80%] fixed left-0 top-20 bg-white rounded-r-2xl flex flex-col items-center font-SpaceGrotesk-reg font-semibold py-4"
+      className="z-50 h-[80%] fixed left-0 top-20 bg-white rounded-r-2xl flex flex-col items-center font-SpaceGrotesk-reg font-semibold py-4"
     >
       <div className="w-full flex flex-row gap-10 items-center">
         <motion.div
