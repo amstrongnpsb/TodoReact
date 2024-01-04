@@ -6,8 +6,8 @@ const Index = ({ name, url, icon }) => {
   const isActive = location.pathname === url;
   return (
     <motion.div
-      whileHover={{ backgroundColor: "#e2e8f0" }}
-      style={{ backgroundColor: isActive ? "#cbd5e1" : "transparent" }}
+      whileHover={{ backgroundColor: "#f5f5f5" }}
+      style={{ backgroundColor: isActive ? "#e5e5e5" : "transparent" }}
     >
       <NavLink to={url}>
         <motion.div

@@ -54,7 +54,7 @@ const Navbar = () => {
       animate={isOpen ? "open" : "closed"}
       initial={{ x: -100 }}
       transition={{ duration: 0.3 }}
-      className="z-50 h-[80%] fixed left-0 top-20 bg-white rounded-r-2xl flex flex-col items-center font-SpaceGrotesk-reg font-semibold py-4"
+      className="z-50 h-[80%] fixed left-0 top-20 shadow-lg bg-white rounded-r-2xl flex flex-col items-center font-SpaceGrotesk-reg font-semibold py-4"
     >
       <div className="w-full flex flex-row gap-10 items-center">
         <motion.div
