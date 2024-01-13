@@ -1,6 +1,6 @@
 import { motion } from "framer-motion";
 import { useState, useRef } from "react";
-const ActionButton = ({ data }) => {
+const ActionButton = ({ data, handleClicked, isActive }) => {
   const [isHover, setisHover] = useState(false);
   const componentRef = useRef(null);
   const handleHover = () => {
@@ -10,10 +10,15 @@ const ActionButton = ({ data }) => {
     <motion.div
       onMouseEnter={handleHover}
       onMouseLeave={handleHover}
+      onClick={handleClicked}
       ref={componentRef}
       initial={false}
-      animate={isHover ? "open" : "closed"}
-      className={`${data.class} buttonWrapper rounded-lg p-2 cursor-pointer`}
+      animate={isHover && !isActive ? "open" : "closed"}
+      className={`${data.class} buttonWrapper rounded-lg p-2 cursor-pointer ${
+        isActive
+          ? "bg-black text-white hover:bg-slate-700"
+          : "bg-white text-black hover:bg-slate-300"
+      } `}
     >
       {data.icon}
       <motion.p
