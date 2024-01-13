@@ -33,6 +33,6 @@ const ActionButton = ({ data, handleClicked, isActive }) => {
 
 export default ActionButton;
 const childVariants = {
-  open: { opacity: 1 },
-  closed: { opacity: 0 },
+  open: { opacity: 1, display: "block" },
+  closed: { opacity: 0, display: "none" },
 };
