@@ -24,22 +24,40 @@ const SearchButton = () => {
   return (
     <AnimatePresence>
       <motion.div
+        layout
         ref={componentRef}
+        variants={{
+          open: {
+            width: "260px",
+            justifyContent: "end",
+          },
+          closed: {
+            width: "60px",
+            justifyContent: "end",
+          },
+        }}
         animate={isShow ? "open" : "closed"}
-        transition={{ duration: 0.5 }}
-        className="p-2 rounded-xl shadow-md cursor-pointer flex flex-row items-center justify-center gap-2"
+        transition={{ duration: 0.2 }}
+        className="p-4 rounded-xl shadow-md cursor-pointer flex flex-row items-center gap-2"
         onClick={() => setIsShow(true)}
       >
         <motion.input
           type="text"
-          className="w-52 outline-none p-2"
+          className="outline-none"
           placeholder="Search Task"
           variants={{
-            open: { display: "block", opacity: 1, x: 0 },
-            closed: { display: "none", opacity: 0, x: 200 },
+            open: {
+              opacity: 1,
+              x: 0,
+              display: "block",
+              transition: { delay: 0.3 },
+            },
+            closed: { display: "none", opacity: 0 },
           }}
         />
-        <IoSearch className="w-6 h-6" />
+        <div className="w-fit">
+          <IoSearch className="w-6 h-6" />
+        </div>
       </motion.div>
     </AnimatePresence>
   );
