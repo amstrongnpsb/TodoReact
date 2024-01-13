@@ -13,7 +13,7 @@ const TodoListBox = () => {
         setTimeout(() => {
           setData(response.data);
           setIsLoading(false);
-        }, 3000);
+        }, 1000);
       })
       .catch(function (error) {
         // handle error
@@ -96,7 +96,7 @@ const TodoListBox = () => {
             {data.map((item, index) => (
               <tr key={item.id} className="border-b-2 border-gray-100">
                 <td scope="row" className="px-6 py-4">
-                  {index}
+                  {index + 1}
                 </td>
                 <td scope="row" className="px-6 py-4">
                   {item.title}

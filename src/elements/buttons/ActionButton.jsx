@@ -1,41 +1,33 @@
 import { motion } from "framer-motion";
-import { useState } from "react";
-import { MdAssignmentAdd } from "react-icons/md";
-import { GrTask } from "react-icons/gr";
-import { GrProjects } from "react-icons/gr";
-const ActionButton = ({ index }) => {
-  const [isShow, setIsShow] = useState(false);
-  const buttonList = [
-    {
-      label: "add new task",
-      icon: <MdAssignmentAdd className="w-6 h-6" />,
-    },
-    {
-      label: "completed task",
-      icon: <GrTask className="w-6 h-6" />,
-    },
-    {
-      label: "list group",
-      icon: <GrProjects className="w-6 h-6" />,
-    },
-  ];
+import { useState, useRef } from "react";
+const ActionButton = ({ data }) => {
+  const [isHover, setisHover] = useState(false);
+  const componentRef = useRef(null);
+  const handleHover = () => {
+    setisHover(!isHover);
+  };
   return (
     <motion.div
-      onMouseEnter={() => setIsShow(true)}
-      onMouseLeave={() => setIsShow(false)}
+      onMouseEnter={handleHover}
+      onMouseLeave={handleHover}
+      ref={componentRef}
       initial={false}
-      animate={isShow ? "open" : "closed"}
-      className="buttonWrapper hover:bg-slate-100 rounded-lg p-2 cursor-pointer"
+      animate={isHover ? "open" : "closed"}
+      className={`${data.class} buttonWrapper rounded-lg p-2 cursor-pointer`}
     >
-      {buttonList[index].icon}
+      {data.icon}
       <motion.p
-        variants={{ open: { opacity: 1 }, closed: { opacity: 0 } }}
+        variants={childVariants}
         className="text-sm font-semibold bg-gray-900 text-white px-2 py-1 absolute rounded-lg mt-5 capitalize"
       >
-        {buttonList[index].label}
+        {data.label}
       </motion.p>
     </motion.div>
   );
 };
 
 export default ActionButton;
+const childVariants = {
+  open: { opacity: 1 },
+  closed: { opacity: 0 },
+};
