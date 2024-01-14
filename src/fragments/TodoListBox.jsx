@@ -1,57 +1,21 @@
-import { useEffect, useState } from "react";
+import { useState } from "react";
 import { ActionButtonBox } from "../fragments/ActionButtonBox";
-import Axios from "axios";
 import SearchButton from "../elements/buttons/SearchButton";
 import LoadingSpin from "../elements/LoadingSpin";
 import { AnimatePresence, motion } from "framer-motion";
 import Input from "../elements/inputs/Input";
 import TextArea from "../elements/inputs/TextArea";
+import { useFetch } from "../services/customHooks/useFetch";
 const TodoListBox = () => {
-  const [data, setData] = useState([]);
-  const [isLoading, setIsLoading] = useState(true);
-  const [activeButton, setActiveButton] = useState([false, false, false]);
-  useEffect(() => {
-    Axios.get("http://localhost:8000/todolist")
-      .then(function (response) {
-        setTimeout(() => {
-          setData(response.data);
-          setIsLoading(false);
-        }, 1000);
-      })
-      .catch(function (error) {
-        // handle error
-        if (error.response) {
-          // The request was made and the server responded with a status code
-          setData({
-            code: 400,
-            message: `Error, ${error.response.status}`,
-          });
-          setIsLoading(false);
-          console.log("Request failed with status code", error.response.status);
-        } else if (error.request) {
-          // The request was made but no response was received
-          setData({
-            code: 503,
-            message: "HTTP Status Code 503 - Service Unavailable",
-          });
-          setIsLoading(false);
-        } else {
-          // Something happened in setting up the request that triggered an Error
-          setData({
-            code: 500,
-            message: `Error, ${error.message}`,
-          });
-          setIsLoading(false);
-        }
-      });
-  }, []);
-  const sendToParent = (activeButton) => {
+  const { data, isLoading } = useFetch("http://localhost:8000/todolist");
+  const [activeButton, setActiveButton] = useState([]);
+  const getActiveButton = (activeButton) => {
     setActiveButton(activeButton);
   };
   return (
     <div className="w-[80%] mx-auto p-3">
       <div className="flex flex-row w-full justify-between items-center">
-        <ActionButtonBox sendToParent={sendToParent} />
+        <ActionButtonBox actionActiveButton={getActiveButton} />
         <SearchButton />
       </div>
       <AnimatePresence>

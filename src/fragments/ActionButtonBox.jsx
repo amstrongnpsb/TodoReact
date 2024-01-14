@@ -1,7 +1,7 @@
 import ActionButton from "../elements/buttons/ActionButton";
 import { Index as ActionIcons } from "../assets/icons/actionIcons/Index";
 import { useState } from "react";
-export const ActionButtonBox = (props) => {
+export const ActionButtonBox = ({ actionActiveButton }) => {
   const buttonLists = ActionIcons();
   const [isActive, setIsActive] = useState([false, false, false]);
   const handleActiveButton = (index) => {
@@ -10,7 +10,7 @@ export const ActionButtonBox = (props) => {
         return !value;
       }
     });
-    props.sendToParent(updatedIsActive);
+    actionActiveButton(updatedIsActive);
     setIsActive(updatedIsActive);
   };
   return (
