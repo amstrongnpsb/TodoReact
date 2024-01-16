@@ -1,4 +1,4 @@
-const Input = ({ label, type, placeholder, focus, name }) => {
+const Input = ({ label, type, placeholder, focus, name, handlingOnchange }) => {
   return (
     <div className="mb-3">
       <label htmlFor={name} className="font-semibold block">
@@ -11,6 +11,7 @@ const Input = ({ label, type, placeholder, focus, name }) => {
         name={name}
         placeholder={placeholder}
         autoFocus={focus ? true : undefined}
+        onChange={handlingOnchange}
       />
     </div>
   );

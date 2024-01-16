@@ -1,57 +1,94 @@
-import { useState } from "react";
+import { useRef, useState } from "react";
 import { ActionButtonBox } from "../fragments/ActionButtonBox";
 import SearchButton from "../elements/buttons/SearchButton";
 import LoadingSpin from "../elements/LoadingSpin";
-import { AnimatePresence, motion } from "framer-motion";
+import { AnimatePresence } from "framer-motion";
 import Input from "../elements/inputs/Input";
 import TextArea from "../elements/inputs/TextArea";
 import { useFetch } from "../services/customHooks/useFetch";
+import FormComponent from "./FormComponent";
+import axios from "axios";
+import NotificationAlert from "../elements/NotificationAlert";
 const TodoListBox = () => {
-  const { data, isLoading } = useFetch("http://localhost:8000/todolist");
+  const { data, isLoading, reFetchData } = useFetch(
+    "http://localhost:8000/todolists"
+  );
   const [activeButton, setActiveButton] = useState([]);
+  const [notificationAlert, setNotificationAlert] = useState([]);
+  const [resetButton, setResetButton] = useState([]);
+  const titleRef = useRef({});
+  const descriptionRef = useRef({});
+
+  const submitData = (e) => {
+    e.preventDefault();
+    const currentTime = new Date().toISOString().split("T")[0].toString();
+    const task = {
+      id: Date.now(),
+      title: titleRef.current.value,
+      description: descriptionRef.current.value,
+      date: currentTime,
+    };
+    setResetButton(true);
+    axios
+      .post("http://localhost:8000/todolists", task)
+      .then(() => {
+        //if success refetching to get updated data
+        reFetchData("http://localhost:8000/todolists");
+        setNotificationAlert({
+          code: 201,
+          message: "Success to Create New Task",
+        });
+      })
+      .catch(() => {
+        setNotificationAlert({
+          code: 404,
+          message: "Fail to Create New Task",
+        });
+      });
+    setResetButton([]);
+  };
   const getActiveButton = (activeButton) => {
     setActiveButton(activeButton);
   };
   return (
     <div className="w-[80%] mx-auto p-3">
+      <NotificationAlert handlingNotification={notificationAlert} />
       <div className="flex flex-row w-full justify-between items-center">
-        <ActionButtonBox actionActiveButton={getActiveButton} />
+        <ActionButtonBox
+          actionActiveButton={getActiveButton}
+          resetButton={resetButton}
+        />
         <SearchButton />
       </div>
       <AnimatePresence>
         {activeButton[0] && (
-          <motion.div
-            initial={{ opacity: 0, y: -100 }}
-            animate={{ opacity: 1, y: 0 }}
-            exit={{ opacity: 0, y: -100 }}
-            transition={{ duration: 0.3 }}
-            className="mt-3 shadow-lg rounded-xl p-4 w-fit"
+          <FormComponent
+            titleName={"New Task Form"}
+            buttonName={"Create Task"}
+            handlingSubmit={submitData}
           >
-            <form action="#">
-              <h1 className="text-xl font-semibold text-center mb-5">
-                New Task Form
-              </h1>
-              <Input
-                label="Title"
-                type="text"
-                placeholder="Title"
-                focus={true}
-                name="title"
-              />
-              <TextArea
-                label="Description"
-                placeholder="Description"
-                focus={false}
-                name="description"
-              />
-              <button className="bg-black block w-full font-semibold text-lg text-white px-3 py-2 rounded-lg mt-3 hover:opacity-70">
-                Submit
-              </button>
-            </form>
-          </motion.div>
+            <Input
+              label="Title"
+              type="text"
+              placeholder="Title"
+              focus={true}
+              name="title"
+              handlingOnchange={(e) => {
+                titleRef.current.value = e.target.value;
+              }}
+            />
+            <TextArea
+              label="Description"
+              placeholder="Description"
+              focus={false}
+              name="description"
+              handlingOnchange={(e) => {
+                descriptionRef.current.value = e.target.value;
+              }}
+            />
+          </FormComponent>
         )}
       </AnimatePresence>
-
       <table className="table-auto text-left w-full rounded-xl shadow-md mt-5">
         <thead className="font-medium shadow-md">
           <tr>
@@ -90,7 +127,7 @@ const TodoListBox = () => {
                 colSpan={4}
                 className="px-6 py-4 w-full text-center"
               >
-                {data.message}
+                {data.message ? data.message : "No Data Found"}
               </td>
             </tr>
           </tbody>

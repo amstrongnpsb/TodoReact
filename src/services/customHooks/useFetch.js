@@ -4,7 +4,7 @@ import Axios from "axios";
 export const useFetch = (url) => {
   const [data, setData] = useState([]);
   const [isLoading, setIsLoading] = useState(true);
-  useEffect(() => {
+  const fetchData = (url) => {
     Axios.get(url)
       .then(function (response) {
         setTimeout(() => {
@@ -18,7 +18,7 @@ export const useFetch = (url) => {
           // The request was made and the server responded with a status code
           setData({
             code: 400,
-            message: `Error, ${error.response.status}`,
+            message: `Error, ${error.response.status} | Endpoint Invalid`,
           });
           setIsLoading(false);
           console.log("Request failed with status code", error.response.status);
@@ -38,6 +38,13 @@ export const useFetch = (url) => {
           setIsLoading(false);
         }
       });
+  };
+  useEffect(() => {
+    fetchData(url);
   }, [url]);
-  return { data, isLoading };
+
+  const reFetchData = (url) => {
+    fetchData(url);
+  };
+  return { data, isLoading, reFetchData };
 };

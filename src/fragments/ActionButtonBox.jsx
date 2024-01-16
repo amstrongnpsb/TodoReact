@@ -1,9 +1,15 @@
 import ActionButton from "../elements/buttons/ActionButton";
 import { Index as ActionIcons } from "../assets/icons/actionIcons/Index";
-import { useState } from "react";
-export const ActionButtonBox = ({ actionActiveButton }) => {
+import { useEffect, useState } from "react";
+export const ActionButtonBox = ({ actionActiveButton, resetButton }) => {
   const buttonLists = ActionIcons();
   const [isActive, setIsActive] = useState([false, false, false]);
+  useEffect(() => {
+    if (resetButton) {
+      setIsActive([false, false, false]);
+      actionActiveButton([]);
+    }
+  }, [resetButton]);
   const handleActiveButton = (index) => {
     const updatedIsActive = isActive.map((value, i) => {
       if (i === index) {
