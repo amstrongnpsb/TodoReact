@@ -1,4 +1,5 @@
 import AboutPage from "./pages/AboutPage";
+import LoginPage from "./pages/LoginPage";
 import NotFoundPage from "./pages/NotFoundPage";
 import SettingsPage from "./pages/SettingPage";
 import TodoListPage from "./pages/TodoListPage";
@@ -14,6 +15,7 @@ function App() {
           <Route path="/settings" element={<SettingsPage />} />
           {/* 404 Router */}
           <Route path="*" element={<NotFoundPage />} />
+          <Route path="/login" element={<LoginPage />} />
         </Routes>
       </BrowserRouter>
     </>

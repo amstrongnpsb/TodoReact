@@ -28,7 +28,6 @@ const TodoListBox = () => {
       description: descriptionRef.current.value,
       date: currentTime,
     };
-    setResetButton(true);
     axios
       .post("http://localhost:8000/todolists", task)
       .then(() => {
@@ -38,12 +37,14 @@ const TodoListBox = () => {
           code: 201,
           message: "Success to Create New Task",
         });
+        setResetButton(true);
       })
       .catch(() => {
         setNotificationAlert({
           code: 404,
           message: "Fail to Create New Task",
         });
+        setResetButton(true);
       });
     setResetButton([]);
   };
@@ -61,33 +62,35 @@ const TodoListBox = () => {
         <SearchButton />
       </div>
       <AnimatePresence>
-        {activeButton[0] && (
-          <FormComponent
-            titleName={"New Task Form"}
-            buttonName={"Create Task"}
-            handlingSubmit={submitData}
-          >
-            <Input
-              label="Title"
-              type="text"
-              placeholder="Title"
-              focus={true}
-              name="title"
-              handlingOnchange={(e) => {
-                titleRef.current.value = e.target.value;
-              }}
-            />
-            <TextArea
-              label="Description"
-              placeholder="Description"
-              focus={false}
-              name="description"
-              handlingOnchange={(e) => {
-                descriptionRef.current.value = e.target.value;
-              }}
-            />
-          </FormComponent>
-        )}
+        <div className="w-96">
+          {activeButton[0] && (
+            <FormComponent
+              titleName={"New Task Form"}
+              buttonName={"Create Task"}
+              handlingSubmit={submitData}
+            >
+              <Input
+                label="Title"
+                type="text"
+                placeholder="Title"
+                focus={true}
+                name="title"
+                handlingOnchange={(e) => {
+                  titleRef.current.value = e.target.value;
+                }}
+              />
+              <TextArea
+                label="Description"
+                placeholder="Description"
+                focus={false}
+                name="description"
+                handlingOnchange={(e) => {
+                  descriptionRef.current.value = e.target.value;
+                }}
+              />
+            </FormComponent>
+          )}
+        </div>
       </AnimatePresence>
       <table className="table-auto text-left w-full rounded-xl shadow-md mt-5">
         <thead className="font-medium shadow-md">

@@ -10,7 +10,7 @@ const TextArea = ({ label, placeholder, focus, name, handlingOnchange }) => {
         rows="4"
         cols="50"
         placeholder={placeholder}
-        className="w- p-2 rounded-lg shadow-md outline-none block"
+        className="w-full p-2 rounded-lg shadow-md outline-none block"
         autoFocus={focus ? true : undefined}
         onChange={handlingOnchange}
       />
