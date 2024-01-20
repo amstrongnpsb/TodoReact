@@ -5,12 +5,13 @@ import LoadingSpin from "../elements/LoadingSpin";
 import { AnimatePresence } from "framer-motion";
 import Input from "../elements/inputs/Input";
 import TextArea from "../elements/inputs/TextArea";
-import { useFetch } from "../services/customHooks/useFetch";
 import FormComponent from "./FormComponent";
 import NotificationAlert from "../elements/NotificationAlert";
 import { axiosInstance } from "../lib/axios";
+import { useFetchTasks } from "../services/customHooks/useFetchTask";
+import { usePostTask } from "../services/customHooks/usePostTask";
 const TodoListBox = () => {
-  const { data, isLoading, reFetchData } = useFetch("/tasks");
+  const { data: tasks, isLoading, error } = useFetchTasks();
   const [activeButton, setActiveButton] = useState([]);
   const [notificationAlert, setNotificationAlert] = useState([]);
   const [resetButton, setResetButton] = useState([]);
@@ -25,11 +26,12 @@ const TodoListBox = () => {
       description: descriptionRef.current.value,
       date: currentTime,
     };
+
     axiosInstance
       .post("/tasks", task)
       .then(() => {
         //if success refetching to get updated data
-        reFetchData("/tasks");
+        // reFetchData("/tasks");
         setNotificationAlert({
           code: 201,
           message: "Success to Create New Task",
@@ -44,6 +46,29 @@ const TodoListBox = () => {
         setResetButton(true);
       });
     setResetButton([]);
+  };
+  const renderTasks = () => {
+    return tasks.map((task, index) => {
+      return (
+        <tr key={task.id} className="border-b-2 border-gray-100">
+          <td scope="row" className="px-6 py-4">
+            {index + 1}
+          </td>
+          <td scope="row" className="px-6 py-4">
+            {task.title}
+          </td>
+          <td scope="row" className="px-6 py-4">
+            {task.description}
+          </td>
+          <td scope="row" className="px-6 py-4">
+            {task.created_by}
+          </td>
+          <td scope="row" className="px-6 py-4">
+            {task.created_at}
+          </td>
+        </tr>
+      );
+    });
   };
   const getActiveButton = (activeButton) => {
     setActiveButton(activeButton);
@@ -122,7 +147,7 @@ const TodoListBox = () => {
             </tr>
           </tbody>
         )}
-        {Boolean(!data.length) && (
+        {Boolean(error) && (
           <tbody>
             <tr className="border-b-2 border-gray-100 text-2xl ">
               <td
@@ -130,34 +155,12 @@ const TodoListBox = () => {
                 colSpan={4}
                 className="px-6 py-4 w-full text-center"
               >
-                {data.message ? data.message : "No Data Found"}
+                {error.message}
               </td>
             </tr>
           </tbody>
         )}
-        {Boolean(data.length) && (
-          <tbody>
-            {data.map((item, index) => (
-              <tr key={item.id} className="border-b-2 border-gray-100">
-                <td scope="row" className="px-6 py-4">
-                  {index + 1}
-                </td>
-                <td scope="row" className="px-6 py-4">
-                  {item.title}
-                </td>
-                <td scope="row" className="px-6 py-4">
-                  {item.description}
-                </td>
-                <td scope="row" className="px-6 py-4">
-                  {item.created_by}
-                </td>
-                <td scope="row" className="px-6 py-4">
-                  {item.created_at}
-                </td>
-              </tr>
-            ))}
-          </tbody>
-        )}
+        {tasks && <tbody>{renderTasks()}</tbody>}
       </table>
     </div>
   );

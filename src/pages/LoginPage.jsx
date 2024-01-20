@@ -65,7 +65,7 @@ const LoginPage = () => {
           />
           <Input
             label="Password"
-            type="text"
+            type="password"
             placeholder="Password"
             name="password"
             handlingOnchange={(e) => {
