@@ -112,7 +112,7 @@ const Navbar = () => {
           open: { alignSelf: "start" },
           closed: { alignSelf: "center" },
         }}
-        className=" bg-red-200 w-full"
+        className="w-full"
         onClick={logOut}
       >
         <Navbarlink name="Logout" icon={LogoutIcon} />
