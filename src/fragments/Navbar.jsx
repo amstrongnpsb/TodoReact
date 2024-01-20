@@ -3,10 +3,14 @@ import ListIcon from "../assets/icons/listIcon.svg";
 import Navbarlink from "../elements/navlink/Index";
 import SettingsIcon from "../assets/icons/settingsIcon.svg";
 import AboutIcon from "../assets/icons/aboutIcon.svg";
+import LogoutIcon from "../assets/icons/logoutIcon.svg";
 import { useState, useEffect } from "react";
 import HamburgerButton from "../elements/buttons/HamburgerButton";
 import { motion } from "framer-motion";
+import { useNavigate } from "react-router-dom";
+import { axiosInstance } from "../lib/axios";
 const Navbar = () => {
+  const navigate = useNavigate();
   const [isOpen, setIsOpen] = useState(false);
   const navLinks = [
     {
@@ -40,6 +44,15 @@ const Navbar = () => {
       setIsOpen(!isOpen);
     }
   });
+  const logOut = async () => {
+    try {
+      await axiosInstance.get("/logout");
+      localStorage.removeItem("token");
+    } catch (err) {
+      console.log(err);
+    }
+    navigate("/login");
+  };
   return (
     <motion.div
       variants={{
@@ -54,7 +67,7 @@ const Navbar = () => {
       animate={isOpen ? "open" : "closed"}
       initial={{ x: -100 }}
       transition={{ duration: 0.3 }}
-      className="z-50 h-[80%] fixed left-0 top-20 shadow-lg bg-white rounded-r-2xl flex flex-col items-center font-SpaceGrotesk-reg font-semibold py-4"
+      className="z-50 h-[80%] fixed left-0 top-20 shadow-lg bg-white rounded-r-2xl flex flex-col justify-between items-center font-SpaceGrotesk-reg font-semibold py-4"
     >
       <div className="w-full flex flex-row gap-10 items-center">
         <motion.div
@@ -72,7 +85,7 @@ const Navbar = () => {
 
         <HamburgerButton handleClick={() => setIsOpen(!isOpen)} />
       </div>
-      <motion.ul className="menu-items w-full mt-28">
+      <motion.ul className="menu-items w-full">
         {navLinks.map((item, index) => (
           <motion.div
             init
@@ -94,6 +107,16 @@ const Navbar = () => {
           </motion.div>
         ))}
       </motion.ul>
+      <motion.button
+        variants={{
+          open: { alignSelf: "start" },
+          closed: { alignSelf: "center" },
+        }}
+        className=" bg-red-200 w-full"
+        onClick={logOut}
+      >
+        <Navbarlink name="Logout" icon={LogoutIcon} />
+      </motion.button>
     </motion.div>
   );
 };

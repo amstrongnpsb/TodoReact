@@ -7,18 +7,15 @@ import Input from "../elements/inputs/Input";
 import TextArea from "../elements/inputs/TextArea";
 import { useFetch } from "../services/customHooks/useFetch";
 import FormComponent from "./FormComponent";
-import axios from "axios";
 import NotificationAlert from "../elements/NotificationAlert";
+import { axiosInstance } from "../lib/axios";
 const TodoListBox = () => {
-  const { data, isLoading, reFetchData } = useFetch(
-    "http://localhost:8000/todolists"
-  );
+  const { data, isLoading, reFetchData } = useFetch("/tasks");
   const [activeButton, setActiveButton] = useState([]);
   const [notificationAlert, setNotificationAlert] = useState([]);
   const [resetButton, setResetButton] = useState([]);
   const titleRef = useRef({});
   const descriptionRef = useRef({});
-
   const submitData = (e) => {
     e.preventDefault();
     const currentTime = new Date().toISOString().split("T")[0].toString();
@@ -28,11 +25,11 @@ const TodoListBox = () => {
       description: descriptionRef.current.value,
       date: currentTime,
     };
-    axios
-      .post("http://localhost:8000/todolists", task)
+    axiosInstance
+      .post("/tasks", task)
       .then(() => {
         //if success refetching to get updated data
-        reFetchData("http://localhost:8000/todolists");
+        reFetchData("/tasks");
         setNotificationAlert({
           code: 201,
           message: "Success to Create New Task",
@@ -105,7 +102,10 @@ const TodoListBox = () => {
               Description
             </th>
             <th scope="col" className="px-6 py-4">
-              Date
+              Created By
+            </th>
+            <th scope="col" className="px-6 py-4">
+              Created At
             </th>
           </tr>
         </thead>
@@ -149,7 +149,10 @@ const TodoListBox = () => {
                   {item.description}
                 </td>
                 <td scope="row" className="px-6 py-4">
-                  {item.date}
+                  {item.created_by}
+                </td>
+                <td scope="row" className="px-6 py-4">
+                  {item.created_at}
                 </td>
               </tr>
             ))}
