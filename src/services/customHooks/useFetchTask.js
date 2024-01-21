@@ -5,11 +5,8 @@ export const useFetchTasks = () => {
   return useQuery({
     queryFn: async () => {
       const tasks = await axiosInstance.get("/tasks");
-      return tasks.data.data;
+      return tasks;
     },
-    queryKey: ["get.tasks"],
-    onError: (error) => {
-      throw error;
-    },
+    queryKey: ["fetchTasks"],
   });
 };

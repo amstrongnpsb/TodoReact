@@ -48,8 +48,14 @@ const TodoListBox = () => {
     setResetButton([]);
   };
   const renderTasks = () => {
-    return tasks.map((task, index) => {
-      return (
+    return tasks?.data.data.length === 0 ? (
+      <tr className="border-b-2 border-gray-100 text-2xl ">
+        <td scope="row" colSpan={5} className="px-6 py-4 w-full text-center">
+          No Task Found
+        </td>
+      </tr>
+    ) : (
+      tasks?.data.data.map((task, index) => (
         <tr key={task.id} className="border-b-2 border-gray-100">
           <td scope="row" className="px-6 py-4">
             {index + 1}
@@ -67,8 +73,8 @@ const TodoListBox = () => {
             {task.created_at}
           </td>
         </tr>
-      );
-    });
+      ))
+    );
   };
   const getActiveButton = (activeButton) => {
     setActiveButton(activeButton);
@@ -139,7 +145,7 @@ const TodoListBox = () => {
             <tr className="border-b-2 border-gray-100 text-2xl ">
               <td
                 scope="row"
-                colSpan={4}
+                colSpan={5}
                 className="px-6 py-4 w-full text-center"
               >
                 <LoadingSpin />
@@ -152,7 +158,7 @@ const TodoListBox = () => {
             <tr className="border-b-2 border-gray-100 text-2xl ">
               <td
                 scope="row"
-                colSpan={4}
+                colSpan={5}
                 className="px-6 py-4 w-full text-center"
               >
                 {error.message}
@@ -160,7 +166,7 @@ const TodoListBox = () => {
             </tr>
           </tbody>
         )}
-        {tasks && <tbody>{renderTasks()}</tbody>}
+        <tbody>{renderTasks()}</tbody>
       </table>
     </div>
   );
