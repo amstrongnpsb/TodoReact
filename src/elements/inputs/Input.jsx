@@ -1,6 +1,14 @@
 import { useState } from "react";
 import { MdVisibility, MdVisibilityOff } from "react-icons/md";
-const Input = ({ label, type, placeholder, focus, name, handlingOnchange }) => {
+const Input = ({
+  label,
+  type,
+  placeholder,
+  focus,
+  name,
+  handlingOnchange,
+  value,
+}) => {
   const [showPassword, setShowPassword] = useState(false);
   const togglePassword = () => {
     setShowPassword(!showPassword);
@@ -19,6 +27,7 @@ const Input = ({ label, type, placeholder, focus, name, handlingOnchange }) => {
           placeholder={placeholder}
           autoFocus={focus ? true : undefined}
           onChange={handlingOnchange}
+          value={value}
         />
         {name === "password" && (
           <div className="absolute inset-y-0 right-0 flex items-center pr-3">

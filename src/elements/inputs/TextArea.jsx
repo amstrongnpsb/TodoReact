@@ -1,4 +1,11 @@
-const TextArea = ({ label, placeholder, focus, name, handlingOnchange }) => {
+const TextArea = ({
+  label,
+  placeholder,
+  focus,
+  name,
+  handlingOnchange,
+  value,
+}) => {
   return (
     <div className="mb-3">
       <label htmlFor={name} className="font-semibold block">
@@ -13,6 +20,7 @@ const TextArea = ({ label, placeholder, focus, name, handlingOnchange }) => {
         className="w-full p-2 rounded-lg shadow-md outline-none block"
         autoFocus={focus ? true : undefined}
         onChange={handlingOnchange}
+        value={value}
       />
     </div>
   );
