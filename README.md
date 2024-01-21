@@ -11,4 +11,3 @@ Step installation :
 - clone the repository
 - npm install
 - npm run dev ( running application )
-- npx json-server --watch data/db.json --port 8000 ( running fake server )
