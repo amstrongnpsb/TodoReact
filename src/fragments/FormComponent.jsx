@@ -1,8 +1,9 @@
 import { motion } from "framer-motion";
 import LoadingSpin from "../elements/LoadingSpin";
+import { DialogClose } from "@/components/ui/dialog";
 
 const FormComponent = ({
-  formTitle,
+  titleName,
   buttonName,
   children,
   handlingSubmit,
@@ -17,18 +18,20 @@ const FormComponent = ({
       className="mt-3 shadow-lg rounded-xl p-4 w-full"
     >
       <form action="#" onSubmit={handlingSubmit}>
-        <h1 className="text-xl font-semibold text-center mb-5">{formTitle}</h1>
+        <h1 className="text-xl font-semibold text-center mb-5">{titleName}</h1>
         {children}
-        {pending ? (
-          <LoadingSpin name="submitting..." />
-        ) : (
-          <button
-            type="submit"
-            className="bg-black block w-full font-semibold text-lg text-white px-3 py-2 rounded-lg mt-3 hover:opacity-70"
-          >
-            {buttonName}
-          </button>
-        )}
+        <DialogClose asChild>
+          {pending ? (
+            <LoadingSpin name="Processing..." />
+          ) : (
+            <button
+              type="submit"
+              className="bg-black block w-full font-semibold text-lg text-white px-3 py-2 rounded-lg mt-3 hover:opacity-70"
+            >
+              {buttonName}
+            </button>
+          )}
+        </DialogClose>
       </form>
     </motion.div>
   );

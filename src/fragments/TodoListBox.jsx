@@ -8,79 +8,99 @@ import TextArea from "../elements/inputs/TextArea";
 import FormComponent from "./FormComponent";
 import NotificationAlert from "../elements/NotificationAlert";
 import { useFormik } from "formik";
-import { MdDeleteOutline } from "react-icons/md";
-import { FaRegEdit } from "react-icons/fa";
 import {
   useDeleteTask,
   usePostTask,
   useFetchTasks,
+  useEditTask,
 } from "../services/customHooks/taskController";
 import * as Yup from "yup";
-import ModalBox from "../elements/ModalBox";
+import DeleteButton from "@/elements/buttons/DeleteButton";
+import DialogButton from "@/elements/buttons/DialogButton";
+import SelectOption from "@/elements/inputs/SelectOption";
+import { Dialog } from "@/components/ui/dialog";
 const TodoListBox = () => {
   const {
     data: tasks,
     isLoading: isLoadingTasks,
     error,
     refetch: refetchTasks,
-  } = useFetchTasks();
+  } = useFetchTasks({
+    onError: () => {
+      setNotificationAlert({
+        code: 404,
+        message: "Something went wrong",
+      });
+    },
+  });
   const [activeButton, setActiveButton] = useState([]);
   const [notificationAlert, setNotificationAlert] = useState([]);
   const [resetButton, setResetButton] = useState([]);
-  const [showModal, setShowModal] = useState(false);
-  const formikCreateTask = useFormik({
-    initialValues: {
-      title: "",
-      description: "",
+  const statusHandler = {
+    onSuccess: () => {
+      setNotificationAlert({
+        code: 201,
+        message: "Success",
+      });
+      refetchTasks();
     },
+    onError: () => {
+      setNotificationAlert({
+        code: 404,
+        message: "Failed",
+      });
+    },
+  };
+  const formikCreateTask = useFormik({
+    initialValues: { title: "", description: "" },
     validationSchema: Yup.object({
       title: Yup.string().required("Title is required"),
       description: Yup.string().required("Description is required"),
     }),
-    onSubmit: () => {
+    onSubmit: async () => {
       createTask(formikCreateTask.values);
       formikCreateTask.resetForm();
       setResetButton(!resetButton);
       setResetButton([]);
     },
   });
-  const { mutate: createTask, isLoading: isLoadingCreateTask } = usePostTask({
-    onSuccess: () => {
-      setNotificationAlert({
-        code: 201,
-        message: "Success to Create New Task",
-      });
-      refetchTasks();
-    },
-    onError: () => {
-      setNotificationAlert({
-        code: 404,
-        message: "Fail to Create New Task",
-      });
+  const formikEditTask = useFormik({
+    initialValues: { title: "", description: "", status: "", id: "" },
+    validationSchema: Yup.object({
+      title: Yup.string().required("Title is required"),
+      description: Yup.string().required("Description is required"),
+      status: Yup.string().required("Title is required"),
+      id: Yup.string().required("Description is required"),
+    }),
+    onSubmit: async () => {
+      editTask(formikEditTask.values);
+      formikCreateTask.resetForm();
+      setResetButton(!resetButton);
+      setResetButton([]);
     },
   });
-  const handleInputForm = (e) => {
-    const { name, value } = e.target;
-    formikCreateTask.setFieldValue(name, value);
+  const { mutate: createTask, isLoading: isLoadingCreateTask } =
+    usePostTask(statusHandler);
+  const { mutate: editTask, isLoading: isLoadingEditTask } =
+    useEditTask(statusHandler);
+  const onEditClick = (e, task) => {
+    if (e.target.getAttribute("data-state")) {
+      formikEditTask.setFieldValue("id", task.id);
+      formikEditTask.setFieldValue("title", task.title);
+      formikEditTask.setFieldValue("description", task.description);
+      formikEditTask.setFieldValue("status", task.status);
+    }
+  };
+  const handleCreateForm = (e) => {
+    formikCreateTask.setFieldValue(e.target.name, e.target.value);
+  };
+  const handleEditForm = (e) => {
+    formikEditTask.setFieldValue(e.target.name, e.target.value);
   };
   const handleDeleteTask = (id) => {
     deleteTask(id);
   };
-  const { mutate: deleteTask } = useDeleteTask({
-    onSuccess: () => {
-      setNotificationAlert({
-        code: 201,
-        message: "Success Delete Task",
-      });
-      refetchTasks();
-    },
-    onError: () => {
-      setNotificationAlert({
-        code: 404,
-        message: "Fail to Delete Task",
-      });
-    },
-  });
+  const { mutate: deleteTask } = useDeleteTask(statusHandler);
   const renderTasks = () => {
     return tasks?.data.data.length === 0 ? (
       <tr className="border-b-2 border-gray-100 text-2xl ">
@@ -122,31 +142,62 @@ const TodoListBox = () => {
             {task.created_at}
           </td>
           <td className="w-40">
-            <span
-              onClick={() => {
-                handleDeleteTask(task.id);
-              }}
-              className="inline-flex gap-2 shadow-sm shadow-red-600 rounded-lg cursor-pointer hover:bg-red-100 p-2 w-fit"
-            >
-              Delete Task
-              <MdDeleteOutline className="w-6 h-6" />
-            </span>
+            <DeleteButton
+              name="Delete Task"
+              handleCLick={() => handleDeleteTask(task.id)}
+            />
           </td>
           <td className="w-40">
-            <span
-              onClick={renderEditModal}
-              className="inline-flex gap-2 shadow-sm shadow-teal-600 rounded-lg cursor-pointer hover:bg-teal-100 p-2 "
+            <DialogButton
+              name="Edit Task"
+              handleClick={(e) => onEditClick(e, task)}
             >
-              Edit Task
-              <FaRegEdit className="w-6 h-6" />
-            </span>
+              <FormComponent
+                titleName={"Edit Task Form"}
+                buttonName={"Edit Task"}
+                handlingSubmit={formikEditTask.handleSubmit}
+                pending={isLoadingEditTask}
+              >
+                {formikEditTask.touched.title && formikEditTask.errors.title ? (
+                  <div className="text-red-500">
+                    {formikEditTask.errors.title}
+                  </div>
+                ) : null}
+                <Input
+                  label="Title"
+                  type="text"
+                  placeholder="Title"
+                  value={formikEditTask.values.title}
+                  focus={true}
+                  name="title"
+                  handlingOnchange={handleEditForm}
+                />
+                <SelectOption
+                  label="Status"
+                  name="status"
+                  handlingOnchange={handleEditForm}
+                  value={formikEditTask.values.status}
+                />
+                {formikEditTask.touched.description &&
+                formikEditTask.errors.description ? (
+                  <div className="text-red-500">
+                    {formikEditTask.errors.description}
+                  </div>
+                ) : null}
+                <TextArea
+                  label="Description"
+                  placeholder="Description"
+                  value={formikEditTask.values.description}
+                  focus={false}
+                  name="description"
+                  handlingOnchange={handleEditForm}
+                />
+              </FormComponent>
+            </DialogButton>
           </td>
         </tr>
       ))
     );
-  };
-  const renderEditModal = () => {
-    setShowModal(!showModal);
   };
   const getActiveButton = (activeButton) => {
     setActiveButton(activeButton);
@@ -164,42 +215,44 @@ const TodoListBox = () => {
       <AnimatePresence>
         <div className="w-96">
           {activeButton[0] && (
-            <FormComponent
-              titleName={"New Task Form"}
-              buttonName={"Create Task"}
-              handlingSubmit={formikCreateTask.handleSubmit}
-              pending={isLoadingCreateTask}
-            >
-              {formikCreateTask.touched.title &&
-              formikCreateTask.errors.title ? (
-                <div className="text-red-500">
-                  {formikCreateTask.errors.title}
-                </div>
-              ) : null}
-              <Input
-                label="Title"
-                type="text"
-                placeholder="Title"
-                value={formikCreateTask.values.title}
-                focus={true}
-                name="title"
-                handlingOnchange={handleInputForm}
-              />
-              {formikCreateTask.touched.description &&
-              formikCreateTask.errors.description ? (
-                <div className="text-red-500">
-                  {formikCreateTask.errors.description}
-                </div>
-              ) : null}
-              <TextArea
-                label="Description"
-                placeholder="Description"
-                value={formikCreateTask.values.description}
-                focus={false}
-                name="description"
-                handlingOnchange={handleInputForm}
-              />
-            </FormComponent>
+            <Dialog>
+              <FormComponent
+                titleName={"New Task Form"}
+                buttonName={"Create Task"}
+                handlingSubmit={formikCreateTask.handleSubmit}
+                pending={isLoadingCreateTask}
+              >
+                {formikCreateTask.touched.title &&
+                formikCreateTask.errors.title ? (
+                  <div className="text-red-500">
+                    {formikCreateTask.errors.title}
+                  </div>
+                ) : null}
+                <Input
+                  label="Title"
+                  type="text"
+                  placeholder="Title"
+                  value={formikCreateTask.values.title}
+                  focus={true}
+                  name="title"
+                  handlingOnchange={handleCreateForm}
+                />
+                {formikCreateTask.touched.description &&
+                formikCreateTask.errors.description ? (
+                  <div className="text-red-500">
+                    {formikCreateTask.errors.description}
+                  </div>
+                ) : null}
+                <TextArea
+                  label="Description"
+                  placeholder="Description"
+                  value={formikCreateTask.values.description}
+                  focus={false}
+                  name="description"
+                  handlingOnchange={handleCreateForm}
+                />
+              </FormComponent>
+            </Dialog>
           )}
         </div>
       </AnimatePresence>
