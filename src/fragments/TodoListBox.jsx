@@ -16,6 +16,7 @@ import {
   useFetchTasks,
 } from "../services/customHooks/taskController";
 import * as Yup from "yup";
+import ModalBox from "../elements/ModalBox";
 const TodoListBox = () => {
   const {
     data: tasks,
@@ -26,6 +27,7 @@ const TodoListBox = () => {
   const [activeButton, setActiveButton] = useState([]);
   const [notificationAlert, setNotificationAlert] = useState([]);
   const [resetButton, setResetButton] = useState([]);
+  const [showModal, setShowModal] = useState(false);
   const formikCreateTask = useFormik({
     initialValues: {
       title: "",
@@ -98,6 +100,21 @@ const TodoListBox = () => {
           <td scope="row" className="px-6 py-4">
             {task.description}
           </td>
+          <td className={`px-6 py-4 `}>
+            <span
+              className={`${
+                task.status === "done"
+                  ? "bg-green-400"
+                  : task.status === "pending"
+                  ? "bg-yellow-400"
+                  : task.status === "on going"
+                  ? "bg-sky-400"
+                  : ""
+              } p-2 rounded-lg font-semibold capitalize`}
+            >
+              {task.status}
+            </span>
+          </td>
           <td scope="row" className="px-6 py-4">
             {task.created_by}
           </td>
@@ -116,7 +133,10 @@ const TodoListBox = () => {
             </span>
           </td>
           <td className="w-40">
-            <span className="inline-flex gap-2 shadow-sm shadow-teal-600 rounded-lg cursor-pointer hover:bg-teal-100 p-2 ">
+            <span
+              onClick={renderEditModal}
+              className="inline-flex gap-2 shadow-sm shadow-teal-600 rounded-lg cursor-pointer hover:bg-teal-100 p-2 "
+            >
               Edit Task
               <FaRegEdit className="w-6 h-6" />
             </span>
@@ -124,6 +144,9 @@ const TodoListBox = () => {
         </tr>
       ))
     );
+  };
+  const renderEditModal = () => {
+    setShowModal(!showModal);
   };
   const getActiveButton = (activeButton) => {
     setActiveButton(activeButton);
@@ -180,7 +203,7 @@ const TodoListBox = () => {
           )}
         </div>
       </AnimatePresence>
-      <table className="table-auto text-left w-full rounded-xl shadow-md mt-5">
+      <table className="table-auto text-center w-full rounded-xl shadow-md mt-5 ">
         <thead className="font-medium shadow-md">
           <tr>
             <th scope="col" className="px-6 py-4">
@@ -191,6 +214,9 @@ const TodoListBox = () => {
             </th>
             <th scope="col" className="px-6 py-4">
               Description
+            </th>
+            <th scope="col" className="px-6 py-4">
+              Status
             </th>
             <th scope="col" className="px-6 py-4">
               Created By
