@@ -1,78 +1,92 @@
 import Input from "../elements/inputs/Input";
 import FormComponent from "../fragments/FormComponent";
-import { useRef, useState } from "react";
-import { axiosInstance } from "../lib/axios";
 import { useNavigate } from "react-router-dom";
-
+import { Dialog } from "@/components/ui/dialog";
+import { useFormik } from "formik";
+import { useLogin } from "@/services/customHooks/authController";
+import { toast } from "@/components/ui/use-toast";
+import { MdOutlineMoodBad } from "react-icons/md";
+import { GrStatusGood } from "react-icons/gr";
+import * as Yup from "yup";
+import { useEffect } from "react";
 const LoginPage = () => {
-  const [data, setData] = useState([]);
   const navigate = useNavigate();
-  const [submitLoading, setSubmitLoading] = useState(false);
-  const emailRef = useRef({});
-  const passwordRef = useRef({});
-  const submitLogin = async (e) => {
-    e.preventDefault();
-    setSubmitLoading(true);
-    try {
-      const response = await axiosInstance.post(`/login`, {
-        email: emailRef.current.value,
-        password: passwordRef.current.value,
-      });
-      console.log(response);
-      localStorage.setItem("token", response.data.token);
-    } catch (error) {
-      if (error.response) {
-        setData({
-          code: 400,
-          message: `Error, ${error.response.status} | Endpoint Invalid`,
-        });
-        setSubmitLoading(false);
-        console.log("Request failed with status code", error.response.status);
-      } else if (error.request) {
-        setData({
-          code: 503,
-          message: "HTTP Status Code 503 - Service Unavailable",
-        });
-        setSubmitLoading(false);
-      } else {
-        setData({
-          code: 500,
-          message: `Error, ${error.message}`,
-        });
-        setSubmitLoading(false);
-      }
+  useEffect(() => {
+    if (localStorage.getItem("token")) {
+      navigate("/todolist");
     }
-    navigate("/todolist");
+  }, []);
+  const statusHandler = {
+    onSuccess: (message) => {
+      toast({
+        variant: "success",
+        title: (
+          <span className="text-sm font-bold flex flex-row items-center justify-center gap-2">
+            Login Success
+            <GrStatusGood className="w-6 h-6" />
+          </span>
+        ),
+        description: message ? message : "",
+      });
+      navigate("/todolist");
+    },
+    onError: (message) => {
+      toast({
+        variant: "error",
+        title: (
+          <div className="text-sm font-bold flex flex-row items-center justify-center gap-2">
+            Failed
+            <MdOutlineMoodBad className="w-6 h-6" />
+          </div>
+        ),
+        description: message ? message : "",
+      });
+    },
   };
+  const formikLogin = useFormik({
+    initialValues: { email: "", password: "" },
+    validationSchema: Yup.object({
+      email: Yup.string().required("Email is required"),
+      password: Yup.string().required("Password is required"),
+    }),
+    onSubmit: async () => {
+      login(formikLogin.values);
+      formikLogin.resetForm();
+    },
+  });
+  const handleInputForm = (e) => {
+    formikLogin.setFieldValue(e.target.name, e.target.value);
+  };
+  const { mutate: login, isLoading: isLoadingLogin } = useLogin(statusHandler);
   return (
     <div className="min-h-screen w-screen m-auto flex items-center justify-center font-SpaceGrotesk-reg">
       <div className="formLoginContainer w-3/12">
-        <FormComponent
-          formTitle="Login Form"
-          buttonName="Login"
-          handlingSubmit={submitLogin}
-          pending={submitLoading}
-        >
-          <Input
-            label="Email"
-            type="email"
-            placeholder="Email"
-            focus={true}
-            name="email"
-            handlingOnchange={(e) => {
-              emailRef.current.value = e.target.value;
-            }}
-          />
-          <Input
-            label="Password"
-            type="password"
-            placeholder="Password"
-            name="password"
-            handlingOnchange={(e) => {
-              passwordRef.current.value = e.target.value;
-            }}
-          />
-        </FormComponent>
+        <Dialog>
+          <FormComponent
+            titleName="Login Form"
+            buttonName="Login"
+            handlingSubmit={formikLogin.handleSubmit}
+            pending={isLoadingLogin}
+          >
+            <Input
+              label="Email"
+              type="email"
+              placeholder="Email"
+              focus={true}
+              name="email"
+              value={formikLogin.values.email}
+              handlingOnchange={handleInputForm}
+            />
+            <Input
+              label="Password"
+              type="password"
+              placeholder="Password"
+              name="password"
+              value={formikLogin.values.password}
+              handlingOnchange={handleInputForm}
+            />
+          </FormComponent>
+        </Dialog>
       </div>
     </div>
   );

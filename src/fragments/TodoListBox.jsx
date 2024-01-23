@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { ActionButtonBox } from "../fragments/ActionButtonBox";
 import SearchButton from "../elements/buttons/SearchButton";
 import LoadingSpin from "../elements/LoadingSpin";
@@ -6,7 +6,6 @@ import { AnimatePresence } from "framer-motion";
 import Input from "../elements/inputs/Input";
 import TextArea from "../elements/inputs/TextArea";
 import FormComponent from "./FormComponent";
-import NotificationAlert from "../elements/NotificationAlert";
 import { useFormik } from "formik";
 import {
   useDeleteTask,
@@ -19,38 +18,62 @@ import DeleteButton from "@/elements/buttons/DeleteButton";
 import DialogButton from "@/elements/buttons/DialogButton";
 import SelectOption from "@/elements/inputs/SelectOption";
 import { Dialog } from "@/components/ui/dialog";
+import { useToast } from "@/components/ui/use-toast";
+import { MdOutlineMoodBad } from "react-icons/md";
+import { GrStatusGood } from "react-icons/gr";
 const TodoListBox = () => {
+  const { toast } = useToast();
+
+  const statusHandler = {
+    onSuccess: (message) => {
+      toast({
+        variant: "success",
+        title: (
+          <span className="text-sm font-bold flex flex-row items-center justify-center gap-2">
+            Success
+            <GrStatusGood className="w-6 h-6" />
+          </span>
+        ),
+        description: message ? message : "",
+      });
+      refetchTasks();
+    },
+    onError: (message) => {
+      toast({
+        variant: "error",
+        title: (
+          <div className="text-sm font-bold flex flex-row items-center justify-center gap-2">
+            Failed
+            <MdOutlineMoodBad className="w-6 h-6" />
+          </div>
+        ),
+        description: message ? message : "",
+      });
+    },
+  };
   const {
     data: tasks,
     isLoading: isLoadingTasks,
     error,
     refetch: refetchTasks,
-  } = useFetchTasks({
-    onError: () => {
-      setNotificationAlert({
-        code: 404,
-        message: "Something went wrong",
+  } = useFetchTasks();
+  useEffect(() => {
+    if (error) {
+      toast({
+        variant: "error",
+        title: (
+          <div className="text-sm font-bold flex flex-row items-center justify-center gap-2">
+            Failed
+            <MdOutlineMoodBad className="w-6 h-6" />
+          </div>
+        ),
+        description: "Fail to fetching tasks",
       });
-    },
-  });
+    }
+  }, [error]);
   const [activeButton, setActiveButton] = useState([]);
-  const [notificationAlert, setNotificationAlert] = useState([]);
   const [resetButton, setResetButton] = useState([]);
-  const statusHandler = {
-    onSuccess: () => {
-      setNotificationAlert({
-        code: 201,
-        message: "Success",
-      });
-      refetchTasks();
-    },
-    onError: () => {
-      setNotificationAlert({
-        code: 404,
-        message: "Failed",
-      });
-    },
-  };
+
   const formikCreateTask = useFormik({
     initialValues: { title: "", description: "" },
     validationSchema: Yup.object({
@@ -204,7 +227,6 @@ const TodoListBox = () => {
   };
   return (
     <div className="w-[80%] mx-auto p-3">
-      <NotificationAlert handlingNotification={notificationAlert} />
       <div className="flex flex-row w-full justify-between items-center">
         <ActionButtonBox
           actionActiveButton={getActiveButton}

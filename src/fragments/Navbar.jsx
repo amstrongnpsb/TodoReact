@@ -8,7 +8,11 @@ import { useState, useEffect } from "react";
 import HamburgerButton from "../elements/buttons/HamburgerButton";
 import { motion } from "framer-motion";
 import { useNavigate } from "react-router-dom";
-import { axiosInstance } from "../lib/axios";
+import LoadingSpin from "@/elements/LoadingSpin";
+import { useLogout } from "@/services/customHooks/authController";
+import { GrStatusGood } from "react-icons/gr";
+import { toast } from "@/components/ui/use-toast";
+import { MdOutlineMoodBad } from "react-icons/md";
 const Navbar = () => {
   const navigate = useNavigate();
   const [isOpen, setIsOpen] = useState(false);
@@ -44,14 +48,35 @@ const Navbar = () => {
       setIsOpen(!isOpen);
     }
   });
-  const logOut = async () => {
-    try {
-      await axiosInstance.get("/logout");
-      localStorage.removeItem("token");
-    } catch (err) {
-      console.log(err);
-    }
-    navigate("/login");
+  const { mutate, isLoading } = useLogout({
+    onSuccess: (message) => {
+      toast({
+        variant: "success",
+        title: (
+          <span className="text-sm font-bold flex flex-row items-center justify-center gap-2">
+            Success
+            <GrStatusGood className="w-6 h-6" />
+          </span>
+        ),
+        description: message ? message : "",
+      });
+      navigate("/login");
+    },
+    onError: (message) => {
+      toast({
+        variant: "error",
+        title: (
+          <div className="text-sm font-bold flex flex-row items-center justify-center gap-2">
+            Failed
+            <MdOutlineMoodBad className="w-6 h-6" />
+          </div>
+        ),
+        description: message ? message : "",
+      });
+    },
+  });
+  const handleLogout = () => {
+    mutate();
   };
   return (
     <motion.div
@@ -107,16 +132,20 @@ const Navbar = () => {
           </motion.div>
         ))}
       </motion.ul>
-      <motion.button
-        variants={{
-          open: { alignSelf: "start" },
-          closed: { alignSelf: "center" },
-        }}
-        className="w-full"
-        onClick={logOut}
-      >
-        <Navbarlink name="Logout" icon={LogoutIcon} />
-      </motion.button>
+      {isLoading ? (
+        <LoadingSpin name="Logging Out..." />
+      ) : (
+        <motion.button
+          variants={{
+            open: { alignSelf: "start" },
+            closed: { alignSelf: "center" },
+          }}
+          className="w-full"
+          onClick={handleLogout}
+        >
+          <Navbarlink name="Logout" icon={LogoutIcon} />
+        </motion.button>
+      )}
     </motion.div>
   );
 };

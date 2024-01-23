@@ -1,3 +1,4 @@
+import { Toaster } from "./components/ui/toaster";
 import AboutPage from "./pages/AboutPage";
 import LoginPage from "./pages/LoginPage";
 import NotFoundPage from "./pages/NotFoundPage";
@@ -7,6 +8,7 @@ import { BrowserRouter, Routes, Route } from "react-router-dom";
 function App() {
   return (
     <>
+      <Toaster />
       <BrowserRouter>
         <Routes>
           <Route path="/" element={<TodoListPage />} />

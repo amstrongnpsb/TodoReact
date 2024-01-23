@@ -1,13 +1,12 @@
 import { useMutation, useQuery } from "@tanstack/react-query";
 import { axiosInstance } from "../../lib/axios";
 
-export const useFetchTasks = ({ onError }) => {
+export const useFetchTasks = () => {
   return useQuery({
     queryFn: async () => {
       const tasks = await axiosInstance.get("/tasks");
       return tasks;
     },
-    onError,
     queryKey: ["fetchTasks"],
   });
 };
@@ -17,8 +16,12 @@ export const usePostTask = ({ onSuccess, onError }) => {
       const tasksResponse = await axiosInstance.post("/tasks", body);
       return tasksResponse;
     },
-    onSuccess,
-    onError,
+    onSuccess: () => {
+      onSuccess("Task created successfully");
+    },
+    onError: () => {
+      onError("Create Task Failed");
+    },
   });
 };
 export const useDeleteTask = ({ onSuccess, onError }) => {
@@ -27,8 +30,12 @@ export const useDeleteTask = ({ onSuccess, onError }) => {
       const tasksResponse = await axiosInstance.delete(`/tasks/${id}`);
       return tasksResponse;
     },
-    onSuccess,
-    onError,
+    onSuccess: () => {
+      onSuccess("Task deleted successfully");
+    },
+    onError: () => {
+      onError("Delete Task Failed");
+    },
   });
 };
 export const useEditTask = ({ onSuccess, onError }) => {
@@ -40,7 +47,11 @@ export const useEditTask = ({ onSuccess, onError }) => {
       );
       return tasksResponse;
     },
-    onSuccess,
-    onError,
+    onSuccess: () => {
+      onSuccess("Task edited successfully");
+    },
+    onError: () => {
+      onError("Edit Task Failed");
+    },
   });
 };
