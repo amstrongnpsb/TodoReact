@@ -12,7 +12,7 @@ const TodoListPage = () => {
     }
   }, []);
   return (
-    <div className="min-h-screen w-screen m-auto flex items-center justify-center font-SpaceGrotesk-reg">
+    <div className="todoListPage min-h-screen w-screen m-auto flex items-center justify-center font-SpaceGrotesk-reg ">
       <BlockingBox />
       <Navbar />
       <TodoListLayout />

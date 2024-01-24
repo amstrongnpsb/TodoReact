@@ -1,5 +1,5 @@
 import { Toaster } from "./components/ui/toaster";
-import AboutPage from "./pages/AboutPage";
+import UserPage from "./pages/UserPage";
 import LoginPage from "./pages/LoginPage";
 import NotFoundPage from "./pages/NotFoundPage";
 import SettingsPage from "./pages/SettingPage";
@@ -13,7 +13,7 @@ function App() {
         <Routes>
           <Route path="/" element={<TodoListPage />} />
           <Route path="/todolist" element={<TodoListPage />} />
-          <Route path="/about" element={<AboutPage />} />
+          <Route path="/users" element={<UserPage />} />
           <Route path="/settings" element={<SettingsPage />} />
           {/* 404 Router */}
           <Route path="*" element={<NotFoundPage />} />

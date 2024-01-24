@@ -1,4 +1,4 @@
-import { useEffect, useState } from "react";
+import { useState } from "react";
 import { ActionButtonBox } from "../fragments/ActionButtonBox";
 import SearchButton from "../elements/buttons/SearchButton";
 import LoadingSpin from "../elements/LoadingSpin";
@@ -57,20 +57,6 @@ const TodoListBox = () => {
     error,
     refetch: refetchTasks,
   } = useFetchTasks();
-  useEffect(() => {
-    if (error) {
-      toast({
-        variant: "error",
-        title: (
-          <div className="text-sm font-bold flex flex-row items-center justify-center gap-2">
-            Failed
-            <MdOutlineMoodBad className="w-6 h-6" />
-          </div>
-        ),
-        description: "Fail to fetching tasks",
-      });
-    }
-  }, [error]);
   const [activeButton, setActiveButton] = useState([]);
   const [resetButton, setResetButton] = useState([]);
 
@@ -226,7 +212,7 @@ const TodoListBox = () => {
     setActiveButton(activeButton);
   };
   return (
-    <div className="w-[80%] mx-auto p-3">
+    <div className="todoListBox w-[80%] mx-auto p-3">
       <div className="flex flex-row w-full justify-between items-center">
         <ActionButtonBox
           actionActiveButton={getActiveButton}
@@ -235,7 +221,7 @@ const TodoListBox = () => {
         <SearchButton />
       </div>
       <AnimatePresence>
-        <div className="w-96">
+        <div className="formContainer w-96">
           {activeButton[0] && (
             <Dialog>
               <FormComponent

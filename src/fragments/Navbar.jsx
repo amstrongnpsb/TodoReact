@@ -2,7 +2,7 @@ import AppIcon from "../assets/icons/reactIcon.svg";
 import ListIcon from "../assets/icons/listIcon.svg";
 import Navbarlink from "../elements/navlink/Index";
 import SettingsIcon from "../assets/icons/settingsIcon.svg";
-import AboutIcon from "../assets/icons/aboutIcon.svg";
+import UsersIcon from "../assets/icons/userIcon.svg";
 import LogoutIcon from "../assets/icons/logoutIcon.svg";
 import { useState, useEffect } from "react";
 import HamburgerButton from "../elements/buttons/HamburgerButton";
@@ -28,9 +28,9 @@ const Navbar = () => {
       icon: SettingsIcon,
     },
     {
-      name: "About",
-      url: "/about",
-      icon: AboutIcon,
+      name: "Users",
+      url: "/users",
+      icon: UsersIcon,
     },
   ];
   useEffect(() => {
@@ -92,7 +92,7 @@ const Navbar = () => {
       animate={isOpen ? "open" : "closed"}
       initial={{ x: -100 }}
       transition={{ duration: 0.3 }}
-      className="z-50 h-[80%] fixed left-0 top-20 shadow-lg bg-white rounded-r-2xl flex flex-col justify-between items-center font-SpaceGrotesk-reg font-semibold py-4"
+      className="navbar z-50 h-[80%] fixed left-0 top-20 shadow-lg bg-white rounded-r-2xl flex flex-col justify-between items-center font-SpaceGrotesk-reg font-semibold py-4"
     >
       <div className="w-full flex flex-row gap-10 items-center">
         <motion.div

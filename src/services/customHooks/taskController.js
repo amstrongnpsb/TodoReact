@@ -5,6 +5,7 @@ export const useFetchTasks = () => {
   return useQuery({
     queryFn: async () => {
       const tasks = await axiosInstance.get("/tasks");
+      console.log(tasks);
       return tasks;
     },
     queryKey: ["fetchTasks"],

@@ -1,7 +1,10 @@
 import axios from "axios";
-
+let baseURL = "";
+import.meta.env.VITE_ENV === "laragon"
+  ? (baseURL = import.meta.env.VITE_LARAGON_URL)
+  : (baseURL = import.meta.env.VITE_UBUNTU_URL);
 export const axiosInstance = axios.create({
-  baseURL: "http://localhost:8000/api",
+  baseURL: `${baseURL}/api`,
 });
 axiosInstance.interceptors.request.use(
   (config) => {
