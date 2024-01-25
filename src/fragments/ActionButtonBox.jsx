@@ -20,7 +20,7 @@ export const ActionButtonBox = ({ actionActiveButton, resetButton }) => {
     setIsActive(updatedIsActive);
   };
   return (
-    <div className="flex p-2 gap-1 w-fit rounded-xl shadow-md ">
+    <div className="actionButtonBox flex p-2 gap-1 w-fit rounded-xl shadow-md ">
       {buttonLists.map((buttonList, index) => (
         <ActionButton
           key={index}

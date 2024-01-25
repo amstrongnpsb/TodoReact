@@ -1,21 +1,35 @@
-import { Button } from "@/components/ui/button";
 import { Dialog, DialogContent, DialogTrigger } from "@/components/ui/dialog";
+import { BiSolidUserDetail } from "react-icons/bi";
 import { FaRegEdit } from "react-icons/fa";
-
-const DialogButton = ({ children, handleClick }) => {
+export const EditDialogButton = ({ children, handleClick, name }) => {
   return (
-    <div onClick={handleClick}>
-      <Dialog>
-        <DialogTrigger asChild>
-          <Button className="bg-zinc-900">
-            Edit Task
-            <FaRegEdit className="w-6 h-6 ml-3" />
-          </Button>
-        </DialogTrigger>
-        <DialogContent>{children}</DialogContent>
-      </Dialog>
-    </div>
+    <Dialog>
+      <DialogTrigger asChild>
+        <button
+          className="hover:bg-slate-200 p-2 flex items-center"
+          title={name}
+          onClick={handleClick}
+        >
+          <FaRegEdit className="w-6 h-6 mx-auto " />
+        </button>
+      </DialogTrigger>
+      <DialogContent>{children}</DialogContent>
+    </Dialog>
   );
 };
-
-export default DialogButton;
+export const ShowDialogButton = ({ children, handleClick }) => {
+  return (
+    <Dialog>
+      <DialogTrigger asChild>
+        <button
+          className="hover:bg-slate-200 p-2 flex items-center"
+          onClick={handleClick}
+          title="View Details"
+        >
+          <BiSolidUserDetail className="w-7 h-7 mx-auto " />
+        </button>
+      </DialogTrigger>
+      <DialogContent>{children}</DialogContent>
+    </Dialog>
+  );
+};

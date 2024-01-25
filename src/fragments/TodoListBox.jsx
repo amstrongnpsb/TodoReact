@@ -15,7 +15,7 @@ import {
 } from "../services/customHooks/taskController";
 import * as Yup from "yup";
 import DeleteButton from "@/elements/buttons/DeleteButton";
-import DialogButton from "@/elements/buttons/DialogButton";
+import { EditDialogButton } from "@/elements/buttons/DialogButton";
 import SelectOption from "@/elements/inputs/SelectOption";
 import { Dialog } from "@/components/ui/dialog";
 import { useToast } from "@/components/ui/use-toast";
@@ -92,13 +92,11 @@ const TodoListBox = () => {
     usePostTask(statusHandler);
   const { mutate: editTask, isLoading: isLoadingEditTask } =
     useEditTask(statusHandler);
-  const onEditClick = (e, task) => {
-    if (e.target.getAttribute("data-state")) {
-      formikEditTask.setFieldValue("id", task.id);
-      formikEditTask.setFieldValue("title", task.title);
-      formikEditTask.setFieldValue("description", task.description);
-      formikEditTask.setFieldValue("status", task.status);
-    }
+  const onEditClick = (task) => {
+    formikEditTask.setFieldValue("id", task.id);
+    formikEditTask.setFieldValue("title", task.title);
+    formikEditTask.setFieldValue("description", task.description);
+    formikEditTask.setFieldValue("status", task.status);
   };
   const handleCreateForm = (e) => {
     formikCreateTask.setFieldValue(e.target.name, e.target.value);
@@ -157,9 +155,9 @@ const TodoListBox = () => {
             />
           </td>
           <td className="w-40">
-            <DialogButton
+            <EditDialogButton
               name="Edit Task"
-              handleClick={(e) => onEditClick(e, task)}
+              handleClick={() => onEditClick(task)}
             >
               <FormComponent
                 titleName={"Edit Task Form"}
@@ -202,7 +200,7 @@ const TodoListBox = () => {
                   handlingOnchange={handleEditForm}
                 />
               </FormComponent>
-            </DialogButton>
+            </EditDialogButton>
           </td>
         </tr>
       ))
