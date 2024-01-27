@@ -157,6 +157,7 @@ const TodoListBox = () => {
           <td className="w-40">
             <EditDialogButton
               name="Edit Task"
+              tooltip={true}
               handleClick={() => onEditClick(task)}
             >
               <FormComponent

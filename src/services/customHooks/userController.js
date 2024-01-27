@@ -5,7 +5,6 @@ export const useFetchUsers = () => {
   return useQuery({
     queryFn: async () => {
       const users = await axiosInstance.get("/users");
-      console.log(users);
       return users;
     },
     queryKey: ["fetchUsers"],
