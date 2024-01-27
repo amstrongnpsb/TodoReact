@@ -83,7 +83,7 @@ const TodoListBox = () => {
     }),
     onSubmit: async () => {
       editTask(formikEditTask.values);
-      formikCreateTask.resetForm();
+      formikEditTask.resetForm();
       setResetButton(!resetButton);
       setResetButton([]);
     },
@@ -148,13 +148,14 @@ const TodoListBox = () => {
           <td scope="row" className="px-6 py-4">
             {task.created_at}
           </td>
-          <td className="w-40">
+          <td className="w-10">
             <DeleteButton
               name="Delete Task"
-              handleCLick={() => handleDeleteTask(task.id)}
+              tooltip={true}
+              handleClick={() => handleDeleteTask(task.id)}
             />
           </td>
-          <td className="w-40">
+          <td className="w-10">
             <EditDialogButton
               name="Edit Task"
               tooltip={true}

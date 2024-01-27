@@ -1,4 +1,5 @@
 import TableCustom from "@/elements/TableCustom";
+import UserCard from "@/elements/UserCard";
 import {
   EditDialogButton,
   ShowDialogButton,
@@ -13,6 +14,7 @@ const UserListContainer = () => {
     error,
     // refetch: refetchUsers,
   } = useFetchUsers();
+  console.log(users);
   const renderBody = () => {
     return users?.data.data.map((user, index) => (
       <tr key={user.id} className="border-b-2 border-gray-100">
@@ -29,10 +31,24 @@ const UserListContainer = () => {
           {user.first_name} {user.last_name}
         </td>
         <td className="w-10">
-          <ShowDialogButton />
+          <ShowDialogButton name="Detail User" tooltip={true}>
+            <UserCard
+              username={user.username}
+              email={user.email}
+              firstName={user.first_name}
+              lastName={user.last_name}
+              birth={user.date_of_birth}
+              profilePicture={user.profile_picture}
+            />
+          </ShowDialogButton>
         </td>
         <td className="w-10">
-          <EditDialogButton key={user.id} id={user.id} />
+          <EditDialogButton
+            key={user.id}
+            id={user.id}
+            name="Edit User"
+            tooltip={true}
+          />
         </td>
       </tr>
     ));

@@ -23,14 +23,14 @@ const Navbar = () => {
       icon: ListIcon,
     },
     {
-      name: "Settings",
-      url: "/settings",
-      icon: SettingsIcon,
-    },
-    {
       name: "Users",
       url: "/users",
       icon: UsersIcon,
+    },
+    {
+      name: "Settings",
+      url: "/settings",
+      icon: SettingsIcon,
     },
   ];
   useEffect(() => {
