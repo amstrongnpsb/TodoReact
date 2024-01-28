@@ -88,9 +88,9 @@ const TodoListBox = () => {
       setResetButton([]);
     },
   });
-  const { mutate: createTask, isLoading: isLoadingCreateTask } =
+  const { mutate: createTask, isPending: isLoadingCreateTask } =
     usePostTask(statusHandler);
-  const { mutate: editTask, isLoading: isLoadingEditTask } =
+  const { mutate: editTask, isPending: isLoadingEditTask } =
     useEditTask(statusHandler);
   const onEditClick = (task) => {
     formikEditTask.setFieldValue("id", task.id);

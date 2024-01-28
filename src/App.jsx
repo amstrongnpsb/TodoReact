@@ -5,6 +5,7 @@ import NotFoundPage from "./pages/NotFoundPage";
 import SettingsPage from "./pages/SettingPage";
 import TodoListPage from "./pages/TodoListPage";
 import { BrowserRouter, Routes, Route } from "react-router-dom";
+import RegisterPage from "./pages/RegisterPage";
 function App() {
   return (
     <>
@@ -18,6 +19,7 @@ function App() {
           {/* 404 Router */}
           <Route path="*" element={<NotFoundPage />} />
           <Route path="/login" element={<LoginPage />} />
+          <Route path="/register" element={<RegisterPage />} />
         </Routes>
       </BrowserRouter>
     </>

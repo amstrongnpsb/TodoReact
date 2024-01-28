@@ -23,7 +23,7 @@ export const EditDialogButton = ({
         <DialogTrigger asChild>
           <div className="relative w-fit">
             {Boolean(isHover && tooltip) && (
-              <div className="toolTip absolute w-[100px] top-12 bg-black text-white p-1 rounded-lg ">
+              <div className="toolTip absolute w-[100px] top-12 bg-black text-white font-semibold text-sm p-1 rounded-lg ">
                 {name}
               </div>
             )}
@@ -65,7 +65,7 @@ export const ShowDialogButton = ({
         <DialogTrigger asChild>
           <div className="relative w-fit">
             {Boolean(isHover && tooltip) && (
-              <div className="toolTip absolute w-[100px] top-12 bg-black text-white p-1 rounded-lg ">
+              <div className="toolTip absolute w-[100px] top-12 bg-black text-white font-semibold text-sm p-1 rounded-lg ">
                 {name}
               </div>
             )}

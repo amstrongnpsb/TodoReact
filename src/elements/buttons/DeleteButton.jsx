@@ -24,7 +24,7 @@ const DeleteButton = ({ handleClick, name, buttonName, tooltip }) => {
         <AlertDialogTrigger asChild>
           <div className="relative w-fit">
             {Boolean(isHover && tooltip) && (
-              <div className="toolTip absolute w-[100px] top-12 bg-black text-white p-1 rounded-lg ">
+              <div className="toolTip absolute w-[100px] top-12 bg-black text-white p-1 rounded-lg font-semibold text-sm">
                 {name}
               </div>
             )}

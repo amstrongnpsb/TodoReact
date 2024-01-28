@@ -1,6 +1,6 @@
 import Input from "../elements/inputs/Input";
 import FormComponent from "../fragments/FormComponent";
-import { useNavigate } from "react-router-dom";
+import { NavLink, useNavigate } from "react-router-dom";
 import { Dialog } from "@/components/ui/dialog";
 import { useFormik } from "formik";
 import { useLogin } from "@/services/customHooks/authController";
@@ -57,10 +57,10 @@ const LoginPage = () => {
   const handleInputForm = (e) => {
     formikLogin.setFieldValue(e.target.name, e.target.value);
   };
-  const { mutate: login, isLoading: isLoadingLogin } = useLogin(statusHandler);
+  const { mutate: login, isPending: isLoadingLogin } = useLogin(statusHandler);
   return (
     <div className="min-h-screen w-screen m-auto flex items-center justify-center font-SpaceGrotesk-reg">
-      <div className="formLoginContainer w-3/12">
+      <div className="loginFormContainer w-3/12">
         <Dialog>
           <FormComponent
             titleName="Login Form"
@@ -86,6 +86,14 @@ const LoginPage = () => {
               handlingOnchange={handleInputForm}
             />
           </FormComponent>
+          <div className="mx-auto w-fit mt-2">
+            <p>
+              Don&apos;t have an account?
+              <span className="ml-1 text-blue-700 font-semibold">
+                <NavLink to="/register">Register</NavLink>
+              </span>
+            </p>
+          </div>
         </Dialog>
       </div>
     </div>

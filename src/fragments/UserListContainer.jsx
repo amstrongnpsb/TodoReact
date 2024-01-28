@@ -14,7 +14,6 @@ const UserListContainer = () => {
     error,
     // refetch: refetchUsers,
   } = useFetchUsers();
-  console.log(users);
   const renderBody = () => {
     return users?.data.data.map((user, index) => (
       <tr key={user.id} className="border-b-2 border-gray-100">
