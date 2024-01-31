@@ -118,16 +118,10 @@ const TodoListBox = () => {
     ) : (
       tasks?.data.data.map((task, index) => (
         <tr key={task.id} className="border-b-2 border-gray-100">
-          <td scope="row" className="px-6 py-4">
-            {index + 1}
-          </td>
-          <td scope="row" className="px-6 py-4">
-            {task.title}
-          </td>
-          <td scope="row" className="px-6 py-4">
-            {task.description}
-          </td>
-          <td className={`px-6 py-4 `}>
+          <td scope="row">{index + 1}</td>
+          <td scope="row">{task.title}</td>
+          <td scope="row">{task.description}</td>
+          <td>
             <span
               className={`${
                 task.status === "done"
@@ -142,23 +136,17 @@ const TodoListBox = () => {
               {task.status}
             </span>
           </td>
-          <td scope="row" className="px-6 py-4">
-            {task.created_by}
-          </td>
-          <td scope="row" className="px-6 py-4">
-            {task.created_at}
-          </td>
-          <td className="w-10">
+          <td scope="row">{task.created_by}</td>
+          <td scope="row">{task.created_at}</td>
+          <td className="w-10 px-2 py-2">
             <DeleteButton
               name="Delete Task"
-              tooltip={true}
               handleClick={() => handleDeleteTask(task.id)}
             />
           </td>
-          <td className="w-10">
+          <td className="w-10 px-2 py-2">
             <EditDialogButton
               name="Edit Task"
-              tooltip={true}
               handleClick={() => onEditClick(task)}
             >
               <FormComponent
