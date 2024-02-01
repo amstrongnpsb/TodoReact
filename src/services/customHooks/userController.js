@@ -10,20 +10,20 @@ export const useFetchUsers = () => {
     queryKey: ["fetchUsers"],
   });
 };
-// export const usePostTask = ({ onSuccess, onError }) => {
-//   return useMutation({
-//     mutationFn: async (body) => {
-//       const tasksResponse = await axiosInstance.post("/tasks", body);
-//       return tasksResponse;
-//     },
-//     onSuccess: () => {
-//       onSuccess("Task created successfully");
-//     },
-//     onError: () => {
-//       onError("Create Task Failed");
-//     },
-//   });
-// };
+export const usePostUser = ({ onSuccess, onError }) => {
+  return useMutation({
+    mutationFn: async (body) => {
+      const userResponse = await axiosInstance.post("/users", body);
+      return userResponse;
+    },
+    onSuccess: () => {
+      onSuccess("User created successfully");
+    },
+    onError: () => {
+      onError("Create User Failed");
+    },
+  });
+};
 // export const useDeleteTask = ({ onSuccess, onError }) => {
 //   return useMutation({
 //     mutationFn: async (id) => {

@@ -8,6 +8,8 @@ const Input = ({
   name,
   handlingOnchange,
   value,
+  required,
+  errors,
 }) => {
   const [showPassword, setShowPassword] = useState(false);
   const togglePassword = () => {
@@ -15,8 +17,14 @@ const Input = ({
   };
   return (
     <div className="mb-3">
+      {Boolean(errors?.message && errors.status) && (
+        <div className="text-red-500 text-[12px] font-bold">
+          {errors.message}
+        </div>
+      )}
       <label htmlFor={name} className="font-semibold block">
         {label}
+        {required && <span style={{ color: "red" }}>*</span>}
       </label>
       <div className="relative">
         <input

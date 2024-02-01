@@ -31,3 +31,18 @@ export const useLogout = ({ onSuccess, onError }) => {
     },
   });
 };
+
+export const useRegister = ({ onSuccess, onError }) => {
+  return useMutation({
+    mutationFn: async (body) => {
+      const userResponse = await axiosInstance.post("/register", body);
+      return userResponse;
+    },
+    onSuccess: () => {
+      onSuccess("Please login");
+    },
+    onError: () => {
+      onError("Create User Failed");
+    },
+  });
+};

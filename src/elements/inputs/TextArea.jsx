@@ -5,11 +5,19 @@ const TextArea = ({
   name,
   handlingOnchange,
   value,
+  required,
+  errors,
 }) => {
   return (
     <div className="mb-3">
+      {Boolean(errors?.message && errors.status) && (
+        <div className="text-red-500 text-[12px] font-bold">
+          {errors.message}
+        </div>
+      )}
       <label htmlFor={name} className="font-semibold block">
         {label}
+        {required && <span className="text-red-500">*</span>}
       </label>
       <textarea
         id={name}

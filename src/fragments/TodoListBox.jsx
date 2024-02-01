@@ -155,11 +155,6 @@ const TodoListBox = () => {
                 handlingSubmit={formikEditTask.handleSubmit}
                 pending={isLoadingEditTask}
               >
-                {formikEditTask.touched.title && formikEditTask.errors.title ? (
-                  <div className="text-red-500">
-                    {formikEditTask.errors.title}
-                  </div>
-                ) : null}
                 <Input
                   label="Title"
                   type="text"
@@ -167,6 +162,10 @@ const TodoListBox = () => {
                   value={formikEditTask.values.title}
                   focus={true}
                   name="title"
+                  errors={{
+                    message: formikCreateTask.errors.title,
+                    status: formikCreateTask.touched.title,
+                  }}
                   handlingOnchange={handleEditForm}
                 />
                 <SelectOption
@@ -175,17 +174,14 @@ const TodoListBox = () => {
                   handlingOnchange={handleEditForm}
                   value={formikEditTask.values.status}
                 />
-                {formikEditTask.touched.description &&
-                formikEditTask.errors.description ? (
-                  <div className="text-red-500">
-                    {formikEditTask.errors.description}
-                  </div>
-                ) : null}
                 <TextArea
                   label="Description"
                   placeholder="Description"
                   value={formikEditTask.values.description}
-                  focus={false}
+                  errors={{
+                    message: formikCreateTask.errors.description,
+                    status: formikCreateTask.touched.description,
+                  }}
                   name="description"
                   handlingOnchange={handleEditForm}
                 />
@@ -218,32 +214,30 @@ const TodoListBox = () => {
                 handlingSubmit={formikCreateTask.handleSubmit}
                 pending={isLoadingCreateTask}
               >
-                {formikCreateTask.touched.title &&
-                formikCreateTask.errors.title ? (
-                  <div className="text-red-500">
-                    {formikCreateTask.errors.title}
-                  </div>
-                ) : null}
                 <Input
                   label="Title"
                   type="text"
                   placeholder="Title"
                   value={formikCreateTask.values.title}
                   focus={true}
+                  required={true}
+                  errors={{
+                    message: formikCreateTask.errors.title,
+                    status: formikCreateTask.touched.title,
+                  }}
                   name="title"
                   handlingOnchange={handleCreateForm}
                 />
-                {formikCreateTask.touched.description &&
-                formikCreateTask.errors.description ? (
-                  <div className="text-red-500">
-                    {formikCreateTask.errors.description}
-                  </div>
-                ) : null}
                 <TextArea
                   label="Description"
                   placeholder="Description"
                   value={formikCreateTask.values.description}
                   focus={false}
+                  required={true}
+                  errors={{
+                    message: formikCreateTask.errors.description,
+                    status: formikCreateTask.touched.description,
+                  }}
                   name="description"
                   handlingOnchange={handleCreateForm}
                 />
