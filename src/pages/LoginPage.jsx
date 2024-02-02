@@ -3,7 +3,7 @@ import FormComponent from "../fragments/FormComponent";
 import { NavLink, useNavigate } from "react-router-dom";
 import { Dialog } from "@/components/ui/dialog";
 import { useFormik } from "formik";
-import { useLogin } from "@/services/customHooks/authController";
+import { useLogin } from "@/services/Hooks/authController";
 import { toast } from "@/components/ui/use-toast";
 import { MdOutlineMoodBad } from "react-icons/md";
 import { GrStatusGood } from "react-icons/gr";

@@ -3,7 +3,7 @@ import { useToast } from "@/components/ui/use-toast";
 import Input from "@/elements/inputs/Input";
 import UploadFile from "@/elements/inputs/UploadFile";
 import FormComponent from "@/fragments/FormComponent";
-import { useRegister } from "@/services/customHooks/authController";
+import { useRegister } from "@/services/Hooks/authController";
 import { useFormik } from "formik";
 import { GrStatusGood } from "react-icons/gr";
 import { MdOutlineMoodBad } from "react-icons/md";

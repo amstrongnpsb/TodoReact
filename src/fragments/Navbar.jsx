@@ -9,7 +9,7 @@ import HamburgerButton from "../elements/buttons/HamburgerButton";
 import { motion } from "framer-motion";
 import { useNavigate } from "react-router-dom";
 import LoadingSpin from "@/elements/LoadingSpin";
-import { useLogout } from "@/services/customHooks/authController";
+import { useLogout } from "@/services/Hooks/authController";
 import { GrStatusGood } from "react-icons/gr";
 import { toast } from "@/components/ui/use-toast";
 import { MdOutlineMoodBad } from "react-icons/md";

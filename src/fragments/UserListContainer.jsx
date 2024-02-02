@@ -4,7 +4,7 @@ import {
   EditDialogButton,
   ShowDialogButton,
 } from "@/elements/buttons/DialogButton";
-import { useFetchUsers } from "@/services/customHooks/userController";
+import { useFetchUsers } from "@/services/Hooks/userController";
 
 const UserListContainer = () => {
   const userHeaders = ["Username", "Email", "FullName"];

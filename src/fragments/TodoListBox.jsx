@@ -12,7 +12,7 @@ import {
   usePostTask,
   useFetchTasks,
   useEditTask,
-} from "../services/customHooks/taskController";
+} from "../services/Hooks/taskController";
 import * as Yup from "yup";
 import DeleteButton from "@/elements/buttons/DeleteButton";
 import { EditDialogButton } from "@/elements/buttons/DialogButton";
