@@ -56,35 +56,37 @@ const RegisterPage = () => {
       email: Yup.string().required("Email is required"),
       password: Yup.string().required("Password is required"),
       date_of_birth: Yup.string().required("Date of Birth is required"),
-      profile_picture: Yup.mixed().test(
-        "fileType",
-        "Only images (jpeg, png, jpg, gif) are allowed",
-        (value) => {
-          if (!value) {
-            return true; // Empty value is allowed
+      profile_picture: Yup.mixed()
+        .test(
+          "fileType",
+          "Only images (jpeg, png, jpg, gif) are allowed",
+          (value) => {
+            if (!value) {
+              return true; // Empty value is allowed
+            }
+            return (
+              value &&
+              /^(image\/jpeg|image\/png|image\/jpg|image\/gif)$/.test(
+                value.type
+              )
+            );
           }
-          return (
-            value &&
-            /^(image\/jpeg|image\/png|image\/jpg|image\/gif)$/.test(value.type)
-          );
-        }
-      ),
+        )
+        .notRequired(),
     }),
     onSubmit: () => {
       const formData = new FormData();
-
       Object.entries(formikRegister.values).forEach(([key, value]) => {
-        if (key === "profile_picture") {
+        if (key === "profile_picture" && value) {
           formData.append("profile_picture", value, value.name);
-        } else {
+        } else if (value !== null && value !== undefined && value !== "") {
           formData.append(key, value);
         }
       });
-
       register(formData);
     },
   });
-  const { mutate: register, isLoading: isLoadingRegister } =
+  const { mutate: register, isPending: isLoadingRegister } =
     useRegister(statusHandler);
   const handleInputForm = {
     input: (e) => {
@@ -94,7 +96,6 @@ const RegisterPage = () => {
       formikRegister.setFieldValue("profile_picture", file);
     },
   };
-  console.log(formikRegister.errors, formikRegister.touched);
   return (
     <div>
       <div className="min-h-screen w-screen m-auto flex items-center justify-center font-SpaceGrotesk-reg">
