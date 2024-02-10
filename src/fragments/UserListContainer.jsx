@@ -38,6 +38,8 @@ const UserListContainer = () => {
               lastName={user.last_name}
               birth={user.date_of_birth}
               profilePicture={user.profile_picture}
+              phoneNumber={user.phone_number}
+              gender={user.gender}
             />
           </ShowDialogButton>
         </td>

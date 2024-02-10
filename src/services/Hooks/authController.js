@@ -41,8 +41,17 @@ export const useRegister = ({ onSuccess, onError }) => {
     onSuccess: () => {
       onSuccess("Please login");
     },
-    onError: () => {
-      onError("Create User Failed");
+    onError: (error) => {
+      const errorObject = error.response.data;
+      const objectKeys = Object.keys(errorObject)[0];
+      function extractErrorMessage(errorObject, key) {
+        if (errorObject[key] && errorObject[key].length > 0) {
+          return errorObject[key][0];
+        }
+        return null;
+      }
+      const ErrorMessage = extractErrorMessage(errorObject, objectKeys);
+      onError(ErrorMessage);
     },
   });
 };

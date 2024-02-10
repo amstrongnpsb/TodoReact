@@ -36,6 +36,7 @@ const Input = ({
           autoFocus={focus ? true : undefined}
           onChange={handlingOnchange}
           value={value}
+          autoComplete="off"
         />
         {name === "password" && (
           <div className="absolute inset-y-0 right-0 flex items-center pr-3">

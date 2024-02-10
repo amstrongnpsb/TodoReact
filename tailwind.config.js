@@ -18,7 +18,7 @@ module.exports = {
     },
     extend: {
       fontFamily: {
-        "SpaceGrotesk-reg": ["SpaceGrotesk-reg", "sans-serif"],
+        "SpaceGrotesk-reg": ["SpaceGrotesk", "sans-serif"],
       },
       colors: {
         border: "hsl(var(--border))",

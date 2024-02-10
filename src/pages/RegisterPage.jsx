@@ -1,6 +1,7 @@
 import { Dialog } from "@/components/ui/dialog";
 import { useToast } from "@/components/ui/use-toast";
 import Input from "@/elements/inputs/Input";
+import RadioButton from "@/elements/inputs/RadioButton";
 import UploadFile from "@/elements/inputs/UploadFile";
 import FormComponent from "@/fragments/FormComponent";
 import { useRegister } from "@/services/Hooks/authController";
@@ -49,6 +50,8 @@ const RegisterPage = () => {
       email: "",
       password: "",
       profile_picture: "",
+      gender: "",
+      phone_number: "",
     },
     validationSchema: Yup.object({
       username: Yup.string().required("Username is required"),
@@ -135,6 +138,14 @@ const RegisterPage = () => {
                 handlingOnchange={handleInputForm.input}
               />
               <Input
+                label="Phone Number"
+                type="phone_number"
+                placeholder="Phone Number"
+                name="phone_number"
+                value={formikRegister.values.phone_number}
+                handlingOnchange={handleInputForm.input}
+              />
+              <Input
                 label="First Name"
                 type="text"
                 placeholder="First Name"
@@ -164,6 +175,21 @@ const RegisterPage = () => {
                   status: formikRegister.touched.profile_picture,
                 }}
                 handlingOnchange={handleInputForm.file}
+              />
+              <RadioButton
+                option={[
+                  {
+                    label: "Male",
+                    value: "male",
+                  },
+                  {
+                    label: "Female",
+                    value: "female",
+                  },
+                ]}
+                title="Gender"
+                name="gender"
+                handlingOnchange={handleInputForm.input}
               />
               <Input
                 label="Date of birth"

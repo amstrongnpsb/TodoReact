@@ -43,6 +43,8 @@ const UploadFile = ({ name, label, value, handlingOnchange, errors }) => {
             ref={fileInputRef}
             onChange={handleFileChange}
             value={value}
+            name={name}
+            id={name}
           />
           <div className="flex justify-center flex-col items-center font-semibold gap-5">
             <p className="text-gray-700">Upload File Here</p>

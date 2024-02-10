@@ -2,6 +2,7 @@ import { FaPhoneSquareAlt } from "react-icons/fa";
 import { MdEmail } from "react-icons/md";
 import profilePictureDefault from "../assets/icons/profilePictureDefault.svg";
 import { useEnv } from "@/services/Hooks/useEnv";
+import { PiGenderMaleBold, PiGenderFemaleBold } from "react-icons/pi";
 
 const UserCard = ({
   username,
@@ -11,9 +12,9 @@ const UserCard = ({
   birth,
   profilePicture,
   phoneNumber,
+  gender,
 }) => {
   const baseUrl = useEnv();
-  console.log(baseUrl + "/" + profilePicture);
   return (
     <div className="userCard font-SpaceGrotesk-reg">
       <div className="profilePicture h-32 w-32 mx-auto shadow-md rounded-full border-gray-100 border-2 p-5">
@@ -28,9 +29,17 @@ const UserCard = ({
         />
       </div>
 
-      <p className="text-xl font-bold text-center capitalize mt-4">
-        {`${firstName} ${lastName ? lastName : ""}`}
-      </p>
+      <div className="flex flex-row w-full justify-center items-center gap-2 mt-2">
+        <p className="text-xl font-bold text-center capitalize">
+          {`${firstName} ${lastName ? lastName : ""}`}
+        </p>
+        {gender === "male" && (
+          <PiGenderMaleBold className="w-5 h-5 text-sky-500" />
+        )}
+        {gender === "female" && (
+          <PiGenderFemaleBold className="w-5 h-5 text-pink-500" />
+        )}
+      </div>
       <div className="userInfo w-full mt-2 mx-auto p-3 rounded-lg flex flex-row justify-evenly flex-wrap">
         <div className="flex h-fit text-sm font-semibold gap-2">
           <MdEmail className="w-6 h-6" />
@@ -49,13 +58,13 @@ const UserCard = ({
             <p className="text-base font-semibold capitalize">First Name:</p>
             <p className="text-base font-semibold">{firstName}</p>
           </div>
-          <div className="flex flex-row gap-2 w-full shadow-md p-3 rounded-lg">
-            <p className="text-base font-semibold capitalize">Birth:</p>
-            <p className="text-base font-semibold">{birth}</p>
-          </div>
           <div className="flex flex-row gap-2 w-full  shadow-md p-3 rounded-lg">
             <p className="text-base font-semibold capitalize">Last Name:</p>
             <p className="text-base font-semibold">{lastName}</p>
+          </div>
+          <div className="flex flex-row gap-2 w-full shadow-md p-3 rounded-lg">
+            <p className="text-base font-semibold capitalize">Birth:</p>
+            <p className="text-base font-semibold">{birth}</p>
           </div>
         </div>
       </div>
