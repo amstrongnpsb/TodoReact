@@ -1,46 +1,15 @@
 import { Dialog } from "@/components/ui/dialog";
-import { useToast } from "@/components/ui/use-toast";
 import Input from "@/elements/inputs/Input";
 import RadioButton from "@/elements/inputs/RadioButton";
 import UploadFile from "@/elements/inputs/UploadFile";
 import FormComponent from "@/fragments/FormComponent";
 import { useRegister } from "@/services/Hooks/authController";
+import { toastHandler } from "@/services/Hooks/toastHandler";
 import { useFormik } from "formik";
-import { GrStatusGood } from "react-icons/gr";
-import { MdOutlineMoodBad } from "react-icons/md";
-import { NavLink, useNavigate } from "react-router-dom";
+import { NavLink } from "react-router-dom";
 import * as Yup from "yup";
 
 const RegisterPage = () => {
-  const { toast } = useToast();
-  const navigate = useNavigate();
-  const statusHandler = {
-    onSuccess: (message) => {
-      toast({
-        variant: "success",
-        title: (
-          <span className="text-sm font-bold flex flex-row items-center justify-center gap-2">
-            Your Account Created
-            <GrStatusGood className="w-6 h-6" />
-          </span>
-        ),
-        description: message ? message : "",
-      });
-      navigate("/login");
-    },
-    onError: (message) => {
-      toast({
-        variant: "error",
-        title: (
-          <div className="text-sm font-bold flex flex-row items-center justify-center gap-2">
-            Failed
-            <MdOutlineMoodBad className="w-6 h-6" />
-          </div>
-        ),
-        description: message ? message : "",
-      });
-    },
-  };
   const formikRegister = useFormik({
     initialValues: {
       username: "",
@@ -89,8 +58,9 @@ const RegisterPage = () => {
       register(formData);
     },
   });
-  const { mutate: register, isPending: isLoadingRegister } =
-    useRegister(statusHandler);
+  const { mutate: register, isPending: isLoadingRegister } = useRegister(
+    toastHandler()
+  );
   const handleInputForm = {
     input: (e) => {
       formikRegister.setFieldValue(e.target.name, e.target.value);

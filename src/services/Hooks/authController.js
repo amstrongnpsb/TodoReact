@@ -1,7 +1,11 @@
 import { useMutation } from "@tanstack/react-query";
 import { axiosInstance } from "../../lib/axios";
+import { useNavigate } from "react-router-dom";
+import { useToast } from "@/components/ui/use-toast";
 
 export const useLogin = ({ onSuccess, onError }) => {
+  const { toast } = useToast();
+  const navigate = useNavigate();
   return useMutation({
     mutationFn: async (body) => {
       const loginResponse = await axiosInstance.post("/login", body);
@@ -9,14 +13,23 @@ export const useLogin = ({ onSuccess, onError }) => {
       return loginResponse;
     },
     onSuccess: () => {
-      onSuccess("Welcome Back");
+      onSuccess({
+        toast: toast,
+        message: "Welcome Back",
+        navigate: navigate("/todolist"),
+      });
     },
     onError: () => {
-      onError("Login Failed");
+      onError({
+        toast: toast,
+        message: "Login Failed",
+      });
     },
   });
 };
 export const useLogout = ({ onSuccess, onError }) => {
+  const { toast } = useToast();
+  const navigate = useNavigate();
   return useMutation({
     mutationFn: async () => {
       const logoutResponse = await axiosInstance.get("/logout");
@@ -24,22 +37,32 @@ export const useLogout = ({ onSuccess, onError }) => {
       return logoutResponse;
     },
     onSuccess: () => {
-      onSuccess("Goodbye");
+      onSuccess({
+        toast: toast,
+        message: "Goodbye",
+        navigate: navigate("/login"),
+      });
     },
     onError: () => {
-      onError("Logout Failed");
+      onError({ toast: toast, message: "Logout Failed" });
     },
   });
 };
 
 export const useRegister = ({ onSuccess, onError }) => {
+  const { toast } = useToast();
+  const navigate = useNavigate();
   return useMutation({
     mutationFn: async (body) => {
       const userResponse = await axiosInstance.post("/register", body);
       return userResponse;
     },
     onSuccess: () => {
-      onSuccess("Please login");
+      onSuccess({
+        toast: toast,
+        message: "Please login",
+        navigate: navigate("/login"),
+      });
     },
     onError: (error) => {
       const errorObject = error.response.data;
@@ -51,7 +74,7 @@ export const useRegister = ({ onSuccess, onError }) => {
         return null;
       }
       const ErrorMessage = extractErrorMessage(errorObject, objectKeys);
-      onError(ErrorMessage);
+      onError({ toast: toast, message: ErrorMessage });
     },
   });
 };

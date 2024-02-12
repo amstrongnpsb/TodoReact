@@ -1,7 +1,7 @@
 import { GrStatusGood } from "react-icons/gr";
 import { MdOutlineMoodBad } from "react-icons/md";
-export const toastHandler = (toast, refetch) => ({
-  onSuccess: (message) => {
+export const toastHandler = (refetch) => ({
+  onSuccess: ({ message, navigate, toast }) => {
     toast({
       variant: "success",
       title: (
@@ -12,9 +12,11 @@ export const toastHandler = (toast, refetch) => ({
       ),
       description: message ? message : "",
     });
-    refetch();
+
+    refetch && refetch();
+    navigate && navigate();
   },
-  onError: (message) => {
+  onError: ({ message, navigate, toast }) => {
     toast({
       variant: "error",
       title: (
@@ -25,5 +27,7 @@ export const toastHandler = (toast, refetch) => ({
       ),
       description: message ? message : "",
     });
+    refetch && refetch();
+    navigate && navigate();
   },
 });

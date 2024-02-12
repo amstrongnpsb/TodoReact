@@ -42,6 +42,8 @@ const SearchButton = () => {
         onClick={() => setIsShow(true)}
       >
         <motion.input
+          name="search"
+          id="search"
           type="text"
           className="outline-none"
           placeholder="Search Task"

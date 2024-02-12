@@ -18,39 +18,8 @@ import DeleteButton from "@/elements/buttons/DeleteButton";
 import { EditDialogButton } from "@/elements/buttons/DialogButton";
 import SelectOption from "@/elements/inputs/SelectOption";
 import { Dialog } from "@/components/ui/dialog";
-import { useToast } from "@/components/ui/use-toast";
-import { MdOutlineMoodBad } from "react-icons/md";
-import { GrStatusGood } from "react-icons/gr";
+import { toastHandler } from "@/services/Hooks/toastHandler";
 const TodoListBox = () => {
-  const { toast } = useToast();
-
-  const statusHandler = {
-    onSuccess: (message) => {
-      toast({
-        variant: "success",
-        title: (
-          <span className="text-sm font-bold flex flex-row items-center justify-center gap-2">
-            Success
-            <GrStatusGood className="w-6 h-6" />
-          </span>
-        ),
-        description: message ? message : "",
-      });
-      refetchTasks();
-    },
-    onError: (message) => {
-      toast({
-        variant: "error",
-        title: (
-          <div className="text-sm font-bold flex flex-row items-center justify-center gap-2">
-            Failed
-            <MdOutlineMoodBad className="w-6 h-6" />
-          </div>
-        ),
-        description: message ? message : "",
-      });
-    },
-  };
   const {
     data: tasks,
     isLoading: isLoadingTasks,
@@ -88,10 +57,12 @@ const TodoListBox = () => {
       setResetButton([]);
     },
   });
-  const { mutate: createTask, isPending: isLoadingCreateTask } =
-    usePostTask(statusHandler);
-  const { mutate: editTask, isPending: isLoadingEditTask } =
-    useEditTask(statusHandler);
+  const { mutate: createTask, isPending: isLoadingCreateTask } = usePostTask(
+    toastHandler(refetchTasks)
+  );
+  const { mutate: editTask, isPending: isLoadingEditTask } = useEditTask(
+    toastHandler(refetchTasks)
+  );
   const onEditClick = (task) => {
     formikEditTask.setFieldValue("id", task.id);
     formikEditTask.setFieldValue("title", task.title);
@@ -107,7 +78,7 @@ const TodoListBox = () => {
   const handleDeleteTask = (id) => {
     deleteTask(id);
   };
-  const { mutate: deleteTask } = useDeleteTask(statusHandler);
+  const { mutate: deleteTask } = useDeleteTask(toastHandler(refetchTasks));
   const renderTasks = () => {
     return tasks?.data.data.length === 0 ? (
       <tr className="border-b-2 border-gray-100 text-2xl ">

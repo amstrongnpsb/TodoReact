@@ -8,11 +8,11 @@ const SelectOption = ({ label, name, value, handlingOnchange }) => {
         name={name}
         value={value}
         onChange={handlingOnchange}
-        className="outline-none"
+        className="outline-none cursor-pointer"
+        id={name}
+        autoComplete="off"
       >
-        <option value="pending" className="outline-none">
-          Pending
-        </option>
+        <option value="pending">Pending</option>
         <option value="on going">On Going</option>
         <option value="done">Done</option>
       </select>

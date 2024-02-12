@@ -7,14 +7,10 @@ import LogoutIcon from "../assets/icons/logoutIcon.svg";
 import { useState, useEffect } from "react";
 import HamburgerButton from "../elements/buttons/HamburgerButton";
 import { motion } from "framer-motion";
-import { useNavigate } from "react-router-dom";
 import LoadingSpin from "@/elements/LoadingSpin";
 import { useLogout } from "@/services/Hooks/authController";
-import { GrStatusGood } from "react-icons/gr";
-import { toast } from "@/components/ui/use-toast";
-import { MdOutlineMoodBad } from "react-icons/md";
+import { toastHandler } from "@/services/Hooks/toastHandler";
 const Navbar = () => {
-  const navigate = useNavigate();
   const [isOpen, setIsOpen] = useState(false);
   const navLinks = [
     {
@@ -48,33 +44,7 @@ const Navbar = () => {
       setIsOpen(!isOpen);
     }
   });
-  const { mutate, isLoading } = useLogout({
-    onSuccess: (message) => {
-      toast({
-        variant: "success",
-        title: (
-          <span className="text-sm font-bold flex flex-row items-center justify-center gap-2">
-            Success
-            <GrStatusGood className="w-6 h-6" />
-          </span>
-        ),
-        description: message ? message : "",
-      });
-      navigate("/login");
-    },
-    onError: (message) => {
-      toast({
-        variant: "error",
-        title: (
-          <div className="text-sm font-bold flex flex-row items-center justify-center gap-2">
-            Failed
-            <MdOutlineMoodBad className="w-6 h-6" />
-          </div>
-        ),
-        description: message ? message : "",
-      });
-    },
-  });
+  const { mutate, isLoading } = useLogout(toastHandler());
   const handleLogout = () => {
     mutate();
   };

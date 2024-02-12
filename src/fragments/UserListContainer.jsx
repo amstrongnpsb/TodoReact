@@ -1,4 +1,3 @@
-import { useToast } from "@/components/ui/use-toast";
 import TableCustom from "@/elements/TableCustom";
 import UserCard from "@/elements/UserCard";
 import DeleteButton from "@/elements/buttons/DeleteButton";
@@ -10,7 +9,6 @@ import { toastHandler } from "@/services/Hooks/toastHandler";
 import { useDeleteUser, useFetchUsers } from "@/services/Hooks/userController";
 
 const UserListContainer = () => {
-  const { toast } = useToast();
   const userHeaders = ["Username", "Email", "FullName"];
   const {
     data: users,
@@ -21,9 +19,7 @@ const UserListContainer = () => {
   const handleDeleteUser = (id) => {
     deleteUser(id);
   };
-  const { mutate: deleteUser } = useDeleteUser(
-    toastHandler(toast, refetchUsers)
-  );
+  const { mutate: deleteUser } = useDeleteUser(toastHandler(refetchUsers));
   const renderBody = () => {
     return users?.data.data.map((user, index) => (
       <tr key={user.id} className="border-b-2 border-gray-100">

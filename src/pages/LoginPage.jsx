@@ -4,11 +4,9 @@ import { NavLink, useNavigate } from "react-router-dom";
 import { Dialog } from "@/components/ui/dialog";
 import { useFormik } from "formik";
 import { useLogin } from "@/services/Hooks/authController";
-import { toast } from "@/components/ui/use-toast";
-import { MdOutlineMoodBad } from "react-icons/md";
-import { GrStatusGood } from "react-icons/gr";
 import * as Yup from "yup";
 import { useEffect } from "react";
+import { toastHandler } from "@/services/Hooks/toastHandler";
 const LoginPage = () => {
   const navigate = useNavigate();
   useEffect(() => {
@@ -16,33 +14,6 @@ const LoginPage = () => {
       navigate("/todolist");
     }
   }, []);
-  const statusHandler = {
-    onSuccess: (message) => {
-      toast({
-        variant: "success",
-        title: (
-          <span className="text-sm font-bold flex flex-row items-center justify-center gap-2">
-            Login Success
-            <GrStatusGood className="w-6 h-6" />
-          </span>
-        ),
-        description: message ? message : "",
-      });
-      navigate("/todolist");
-    },
-    onError: (message) => {
-      toast({
-        variant: "error",
-        title: (
-          <div className="text-sm font-bold flex flex-row items-center justify-center gap-2">
-            Failed
-            <MdOutlineMoodBad className="w-6 h-6" />
-          </div>
-        ),
-        description: message ? message : "",
-      });
-    },
-  };
   const formikLogin = useFormik({
     initialValues: { email: "", password: "" },
     validationSchema: Yup.object({
@@ -57,7 +28,7 @@ const LoginPage = () => {
   const handleInputForm = (e) => {
     formikLogin.setFieldValue(e.target.name, e.target.value);
   };
-  const { mutate: login, isPending: isLoadingLogin } = useLogin(statusHandler);
+  const { mutate: login, isPending: isLoadingLogin } = useLogin(toastHandler());
   return (
     <div className="min-h-screen w-screen m-auto flex items-center justify-center font-SpaceGrotesk-reg">
       <div className="loginFormContainer w-3/12">

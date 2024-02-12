@@ -1,5 +1,6 @@
 import { useMutation, useQuery } from "@tanstack/react-query";
 import { axiosInstance } from "../../lib/axios";
+import { useToast } from "@/components/ui/use-toast";
 
 export const useFetchTasks = () => {
   return useQuery({
@@ -11,34 +12,37 @@ export const useFetchTasks = () => {
   });
 };
 export const usePostTask = ({ onSuccess, onError }) => {
+  const { toast } = useToast();
   return useMutation({
     mutationFn: async (body) => {
       const tasksResponse = await axiosInstance.post("/tasks", body);
       return tasksResponse;
     },
     onSuccess: () => {
-      onSuccess("Task created successfully");
+      onSuccess({ toast: toast, message: "Task created successfully" });
     },
     onError: () => {
-      onError("Create Task Failed");
+      onError({ toast: toast, message: "Create Task Failed" });
     },
   });
 };
 export const useDeleteTask = ({ onSuccess, onError }) => {
+  const { toast } = useToast();
   return useMutation({
     mutationFn: async (id) => {
       const tasksResponse = await axiosInstance.delete(`/tasks/${id}`);
       return tasksResponse;
     },
     onSuccess: () => {
-      onSuccess("Task deleted successfully");
+      onSuccess({ toast: toast, message: "Task deleted successfully" });
     },
     onError: () => {
-      onError("Delete Task Failed");
+      onError({ toast: toast, message: "Delete Task Failed" });
     },
   });
 };
 export const useEditTask = ({ onSuccess, onError }) => {
+  const { toast } = useToast();
   return useMutation({
     mutationFn: async (body) => {
       const tasksResponse = await axiosInstance.patch(
@@ -48,10 +52,10 @@ export const useEditTask = ({ onSuccess, onError }) => {
       return tasksResponse;
     },
     onSuccess: () => {
-      onSuccess("Task edited successfully");
+      onSuccess({ toast: toast, message: "Task edited successfully" });
     },
     onError: () => {
-      onError("Edit Task Failed");
+      onError({ toast: toast, message: "Edit Task Failed" });
     },
   });
 };

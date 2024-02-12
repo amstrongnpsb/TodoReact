@@ -29,6 +29,7 @@ const TextArea = ({
         autoFocus={focus ? true : undefined}
         onChange={handlingOnchange}
         value={value}
+        autoComplete="off"
       />
     </div>
   );
