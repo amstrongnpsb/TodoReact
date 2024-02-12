@@ -24,20 +24,34 @@ export const usePostUser = ({ onSuccess, onError }) => {
     },
   });
 };
-// export const useDeleteTask = ({ onSuccess, onError }) => {
-//   return useMutation({
-//     mutationFn: async (id) => {
-//       const tasksResponse = await axiosInstance.delete(`/tasks/${id}`);
-//       return tasksResponse;
-//     },
-//     onSuccess: () => {
-//       onSuccess("Task deleted successfully");
-//     },
-//     onError: () => {
-//       onError("Delete Task Failed");
-//     },
-//   });
-// };
+export const useDeleteUser = ({ onSuccess, onError }) => {
+  return useMutation({
+    mutationFn: async (id) => {
+      const userResponse = await axiosInstance.delete(`/users/${id}`);
+      return userResponse;
+    },
+    onSuccess: () => {
+      onSuccess("User deleted successfully");
+    },
+    onError: () => {
+      onError("Delete User Failed");
+    },
+  });
+};
+export const useRestoreUser = ({ onSuccess, onError }) => {
+  return useMutation({
+    mutationFn: async (id) => {
+      const userResponse = await axiosInstance.get(`/users/restore/${id}`);
+      return userResponse;
+    },
+    onSuccess: () => {
+      onSuccess("User restored successfully");
+    },
+    onError: () => {
+      onError("Restoring User Failed");
+    },
+  });
+};
 // export const useEditTask = ({ onSuccess, onError }) => {
 //   return useMutation({
 //     mutationFn: async (body) => {

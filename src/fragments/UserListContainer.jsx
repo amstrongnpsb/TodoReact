@@ -1,35 +1,39 @@
+import { useToast } from "@/components/ui/use-toast";
 import TableCustom from "@/elements/TableCustom";
 import UserCard from "@/elements/UserCard";
+import DeleteButton from "@/elements/buttons/DeleteButton";
 import {
   EditDialogButton,
   ShowDialogButton,
 } from "@/elements/buttons/DialogButton";
-import { useFetchUsers } from "@/services/Hooks/userController";
+import { toastHandler } from "@/services/Hooks/toastHandler";
+import { useDeleteUser, useFetchUsers } from "@/services/Hooks/userController";
 
 const UserListContainer = () => {
+  const { toast } = useToast();
   const userHeaders = ["Username", "Email", "FullName"];
   const {
     data: users,
     isLoading: isLoadingUsers,
     error,
-    // refetch: refetchUsers,
+    refetch: refetchUsers,
   } = useFetchUsers();
+  const handleDeleteUser = (id) => {
+    deleteUser(id);
+  };
+  const { mutate: deleteUser } = useDeleteUser(
+    toastHandler(toast, refetchUsers)
+  );
   const renderBody = () => {
     return users?.data.data.map((user, index) => (
       <tr key={user.id} className="border-b-2 border-gray-100">
-        <td scope="row" className="px-6 py-4">
-          {index + 1}
-        </td>
-        <td scope="row" className="px-6 py-4">
-          {user.username}
-        </td>
-        <td scope="row" className="px-6 py-4">
-          {user.email}
-        </td>
-        <td scope="row" className="px-6 py-4 capitalize">
+        <td scope="row">{index + 1}</td>
+        <td scope="row">{user.username}</td>
+        <td scope="row">{user.email}</td>
+        <td scope="row" className="capitalize">
           {user.first_name} {user.last_name}
         </td>
-        <td className="w-10">
+        <td className="w-10 px-2 py-2">
           <ShowDialogButton name="Detail User" tooltip={true}>
             <UserCard
               username={user.username}
@@ -43,12 +47,18 @@ const UserListContainer = () => {
             />
           </ShowDialogButton>
         </td>
-        <td className="w-10">
+        <td className="w-10 px-2 py-2">
           <EditDialogButton
             key={user.id}
             id={user.id}
             name="Edit User"
             tooltip={true}
+          />
+        </td>
+        <td className="w-10 px-2 py-2">
+          <DeleteButton
+            handleClick={() => handleDeleteUser(user.id)}
+            name="Delete User"
           />
         </td>
       </tr>
