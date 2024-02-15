@@ -159,6 +159,7 @@ const RegisterPage = () => {
                 ]}
                 title="Gender"
                 name="gender"
+                value={formikRegister.values.gender}
                 handlingOnchange={handleInputForm.input}
               />
               <Input

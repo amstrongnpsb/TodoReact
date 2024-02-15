@@ -3,6 +3,7 @@ import { MdEmail } from "react-icons/md";
 import profilePictureDefault from "../assets/icons/profilePictureDefault.svg";
 import { useEnv } from "@/services/Hooks/useEnv";
 import { PiGenderMaleBold, PiGenderFemaleBold } from "react-icons/pi";
+import { useEffect, useState } from "react";
 
 const UserCard = ({
   username,
@@ -14,18 +15,18 @@ const UserCard = ({
   phoneNumber,
   gender,
 }) => {
+  const [image, setImage] = useState(profilePictureDefault);
+  useEffect(() => {
+    setImage(profilePicture);
+  }, [profilePicture]);
   const baseUrl = useEnv();
   return (
     <div className="userCard font-SpaceGrotesk-reg">
       <div className="profilePicture h-32 w-32 mx-auto shadow-md rounded-full border-gray-100 border-2 p-5">
         <img
-          src={
-            profilePicture
-              ? baseUrl + "/" + profilePicture
-              : profilePictureDefault
-          }
+          src={profilePicture ? baseUrl + "/" + image : profilePictureDefault}
           alt="profile_picture"
-          className="w-full"
+          className="w-full h-full object-cover rounded-full"
         />
       </div>
 

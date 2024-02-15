@@ -1,7 +1,9 @@
+import { useAuth } from "@/services/Hooks/useAuth";
 import BlockingBox from "../elements/BlockingBox";
 import Navbar from "../fragments/Navbar";
 import UserLayout from "@/layouts/UserLayout";
 const UserPage = () => {
+  useAuth();
   return (
     <div className="max-h-screen h-screen w-screen m-auto flex items-center justify-center font-SpaceGrotesk-reg">
       <BlockingBox />

@@ -21,8 +21,17 @@ export const usePostUser = ({ onSuccess, onError }) => {
     onSuccess: () => {
       onSuccess({ toast: toast, message: "User created successfully" });
     },
-    onError: () => {
-      onError({ toast: toast, message: "Create User Failed" });
+    onError: (error) => {
+      const errorObject = error.response.data;
+      const objectKeys = Object.keys(errorObject)[0];
+      function extractErrorMessage(errorObject, key) {
+        if (errorObject[key] && errorObject[key].length > 0) {
+          return errorObject[key][0];
+        }
+        return null;
+      }
+      const ErrorMessage = extractErrorMessage(errorObject, objectKeys);
+      onError({ toast: toast, message: ErrorMessage });
     },
   });
 };
@@ -56,20 +65,32 @@ export const useRestoreUser = ({ onSuccess, onError }) => {
     },
   });
 };
-// export const useEditTask = ({ onSuccess, onError }) => {
-//   return useMutation({
-//     mutationFn: async (body) => {
-//       const tasksResponse = await axiosInstance.patch(
-//         `/tasks/${body.id}`,
-//         body
-//       );
-//       return tasksResponse;
-//     },
-//     onSuccess: () => {
-//       onSuccess("Task edited successfully");
-//     },
-//     onError: () => {
-//       onError("Edit Task Failed");
-//     },
-//   });
-// };
+export const useEditUser = ({ onSuccess, onError }) => {
+  const { toast } = useToast();
+  return useMutation({
+    mutationFn: async (body) => {
+      const id = body.get("id");
+      body.append("_method", "PATCH");
+      // for (let pair of body.entries()) {
+      //   console.log(pair[0], pair[1], pair[1] == "");
+      // }
+      const userResponse = await axiosInstance.post(`/users/${id}`, body);
+      return userResponse;
+    },
+    onSuccess: () => {
+      onSuccess({ toast: toast, message: "User edit successfully" });
+    },
+    onError: (error) => {
+      const errorObject = error.response.data;
+      const objectKeys = Object.keys(errorObject)[0];
+      function extractErrorMessage(errorObject, key) {
+        if (errorObject[key] && errorObject[key].length > 0) {
+          return errorObject[key][0];
+        }
+        return null;
+      }
+      const ErrorMessage = extractErrorMessage(errorObject, objectKeys);
+      onError({ toast: toast, message: ErrorMessage });
+    },
+  });
+};

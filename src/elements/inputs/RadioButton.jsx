@@ -1,4 +1,11 @@
-const RadioButton = ({ option, title, handlingOnchange, required, name }) => {
+const RadioButton = ({
+  option,
+  title,
+  handlingOnchange,
+  required,
+  name,
+  value,
+}) => {
   return (
     <div className="mb-3">
       <p className="font-semibold">
@@ -13,6 +20,7 @@ const RadioButton = ({ option, title, handlingOnchange, required, name }) => {
               id={item.value}
               value={item.value}
               onChange={handlingOnchange}
+              checked={value === item.value}
               className="appearance-none h-3 w-3 border rounded-full border-gray-300 checked:bg-red-600 checked:border-transparent  focus:outline-none"
             />
             <label htmlFor={item.value} className="cursor-pointer ">

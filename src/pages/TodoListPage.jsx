@@ -1,16 +1,10 @@
 import TodoListLayout from "../layouts/TodoListLayout";
 import Navbar from "../fragments/Navbar";
 import BlockingBox from "../elements/BlockingBox";
-import { useEffect } from "react";
-import { useNavigate } from "react-router-dom";
+import { useAuth } from "@/services/Hooks/useAuth";
 
 const TodoListPage = () => {
-  const navigate = useNavigate();
-  useEffect(() => {
-    if (!localStorage.getItem("token")) {
-      navigate("/login");
-    }
-  }, []);
+  useAuth();
   return (
     <div className="todoListPage min-h-screen w-screen m-auto flex items-center justify-center font-SpaceGrotesk-reg ">
       <BlockingBox />

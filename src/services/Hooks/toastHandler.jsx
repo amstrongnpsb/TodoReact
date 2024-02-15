@@ -27,7 +27,6 @@ export const toastHandler = (refetch) => ({
       ),
       description: message ? message : "",
     });
-    refetch && refetch();
     navigate && navigate();
   },
 });
