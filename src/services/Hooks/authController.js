@@ -10,6 +10,7 @@ export const useLogin = ({ onSuccess, onError }) => {
     mutationFn: async (body) => {
       const loginResponse = await axiosInstance.post("/login", body);
       localStorage.setItem("token", loginResponse.data.token);
+      localStorage.setItem("user", loginResponse.data.data.email);
       return loginResponse;
     },
     onSuccess: () => {

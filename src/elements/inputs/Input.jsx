@@ -19,7 +19,7 @@ const Input = ({
     <div className="mb-3">
       {Boolean(errors?.message && errors.status) && (
         <div className="text-red-500 text-[12px] font-bold">
-          {errors.message}
+          {errors?.message}
         </div>
       )}
       <label htmlFor={name} className="font-semibold block">

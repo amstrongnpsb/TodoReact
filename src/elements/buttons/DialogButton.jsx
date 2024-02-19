@@ -12,9 +12,15 @@ export const EditDialogButton = ({
   handleClick,
   name,
   buttonName,
+  isOpen,
+  handleClickDialog,
 }) => {
   return (
-    <Dialog className="font-SpaceGrotesk-reg">
+    <Dialog
+      className="font-SpaceGrotesk-reg"
+      open={isOpen}
+      onOpenChange={handleClickDialog}
+    >
       <TooltipProvider>
         <Tooltip>
           <TooltipTrigger>

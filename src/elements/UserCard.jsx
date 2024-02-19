@@ -22,11 +22,11 @@ const UserCard = ({
   const baseUrl = useEnv();
   return (
     <div className="userCard font-SpaceGrotesk-reg">
-      <div className="profilePicture h-32 w-32 mx-auto shadow-md rounded-full border-gray-100 border-2 p-5">
+      <div className="profilePicture h-32 w-32 mx-auto shadow-md rounded-full border-gray-100 border-2 p-1">
         <img
           src={profilePicture ? baseUrl + "/" + image : profilePictureDefault}
           alt="profile_picture"
-          className="w-full h-full object-cover rounded-full"
+          className="rounded-full"
         />
       </div>
 

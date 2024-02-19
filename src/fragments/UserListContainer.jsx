@@ -17,9 +17,13 @@ import FormComponent from "./FormComponent";
 import Input from "@/elements/inputs/Input";
 import RadioButton from "@/elements/inputs/RadioButton";
 import UploadFile from "@/elements/inputs/UploadFile";
+import { useState } from "react";
 
 const UserListContainer = () => {
   const userHeaders = ["Username", "Email", "FullName"];
+  const [open, setOpen] = useState(false);
+  const [prevImage, setPrevImage] = useState("");
+
   const {
     data: users,
     isLoading: isLoadingUsers,
@@ -76,23 +80,24 @@ const UserListContainer = () => {
       });
 
       editUser(formData);
-      formikEditUser.resetForm();
     },
   });
   const onEditClick = (user) => {
-    formikEditUser.setFieldValue("id", user.id);
-    formikEditUser.setFieldValue("username", user.username);
-    formikEditUser.setFieldValue("first_name", user.first_name);
-    formikEditUser.setFieldValue("last_name", user.last_name);
-    formikEditUser.setFieldValue("date_of_birth", user.date_of_birth);
-    formikEditUser.setFieldValue("email", user.email);
-    formikEditUser.setFieldValue("password", user.password);
+    formikEditUser.resetForm();
+    setPrevImage(user.profile_picture);
+    formikEditUser.setFieldValue("id", user.id || "");
+    formikEditUser.setFieldValue("username", user.username || "");
+    formikEditUser.setFieldValue("first_name", user.first_name || "");
+    formikEditUser.setFieldValue("last_name", user.last_name || "");
+    formikEditUser.setFieldValue("date_of_birth", user.date_of_birth || "");
+    formikEditUser.setFieldValue("email", user.email || "");
+    formikEditUser.setFieldValue("password", user.password || "");
     formikEditUser.setFieldValue(
       "profile_picture",
-      formikEditUser.values.profile_picture
+      formikEditUser.values.profile_picture || ""
     );
-    formikEditUser.setFieldValue("gender", user.gender);
-    formikEditUser.setFieldValue("phone_number", user.phone_number);
+    formikEditUser.setFieldValue("gender", user.gender || "");
+    formikEditUser.setFieldValue("phone_number", user.phone_number || "");
   };
   const handleInputForm = {
     input: (e) => {
@@ -103,7 +108,11 @@ const UserListContainer = () => {
     },
   };
   const { mutate: editUser, isPending: isLoadingEditUser } = useEditUser(
-    toastHandler(refetchUsers)
+    toastHandler(
+      refetchUsers,
+      () => setOpen(!open),
+      () => formikEditUser.resetForm()
+    )
   );
   const handleDeleteUser = (id) => {
     deleteUser(id);
@@ -118,6 +127,7 @@ const UserListContainer = () => {
         <td scope="row" className="capitalize">
           {user.first_name} {user.last_name}
         </td>
+
         <td className="w-10 px-2 py-2">
           <ShowDialogButton name="Detail User" tooltip={true}>
             <UserCard
@@ -136,6 +146,8 @@ const UserListContainer = () => {
           <EditDialogButton
             name="Edit User"
             handleClick={() => onEditClick(user)}
+            handleClickDialog={() => setOpen(!open)}
+            isOpen={open}
           >
             <FormComponent
               titleName="Edit User Form"
@@ -200,6 +212,7 @@ const UserListContainer = () => {
                 handlingOnchange={handleInputForm.input}
               />
               <UploadFile
+                id={user.id}
                 name="profile_picture"
                 label="Profile Picture"
                 value={formikEditUser.values.profile_picture}
@@ -208,7 +221,7 @@ const UserListContainer = () => {
                   status: formikEditUser.touched.profile_picture,
                 }}
                 handlingOnchange={handleInputForm.file}
-                existingImg={user.profile_picture}
+                existingImg={prevImage}
               />
               <RadioButton
                 option={[

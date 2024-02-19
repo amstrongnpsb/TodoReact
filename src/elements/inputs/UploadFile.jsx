@@ -4,6 +4,7 @@ import { useEffect, useRef, useState } from "react";
 import { FaUpload } from "react-icons/fa";
 import { RiDeleteBin2Line } from "react-icons/ri";
 const UploadFile = ({
+  id,
   name,
   label,
   value,
@@ -14,23 +15,18 @@ const UploadFile = ({
   const [file, setFile] = useState("");
   const [existingFile, setExistingFile] = useState(null);
   const [isHover, setIsHover] = useState(false);
-  useEffect(() => {
-    if (existingImg != undefined) {
-      setExistingFile(existingImg);
-    }
-  }, [existingImg]);
+  const fileInputRef = useRef();
+  const baseUrl = useEnv();
   useEffect(() => {
     if (value != "") {
-      setFile(value);
+      setExistingFile(value);
     }
   }, [value]);
   useEffect(() => {
-    if (file == undefined) {
-      setFile("");
+    if (existingImg != "") {
+      setExistingFile(existingImg);
     }
-  }, [file]);
-  const fileInputRef = useRef();
-  const baseUrl = useEnv();
+  }, [existingImg]);
   const handleUpload = () => {
     fileInputRef.current.click();
   };
@@ -71,7 +67,7 @@ const UploadFile = ({
             onChange={handleFileChange}
             value={file}
             name={name}
-            id={name}
+            id={id}
           />
           <div className="flex justify-center flex-col items-center font-semibold gap-5">
             <p className="text-gray-700">Upload File Here</p>

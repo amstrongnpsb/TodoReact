@@ -28,6 +28,7 @@ const TodoListBox = () => {
   } = useFetchTasks();
   const [activeButton, setActiveButton] = useState([]);
   const [resetButton, setResetButton] = useState([]);
+  const [open, setOpen] = useState(false);
 
   const formikCreateTask = useFormik({
     initialValues: { title: "", description: "" },
@@ -61,7 +62,11 @@ const TodoListBox = () => {
     toastHandler(refetchTasks)
   );
   const { mutate: editTask, isPending: isLoadingEditTask } = useEditTask(
-    toastHandler(refetchTasks)
+    toastHandler(
+      refetchTasks,
+      () => setOpen(false),
+      () => formikEditTask.resetForm()
+    )
   );
   const onEditClick = (task) => {
     formikEditTask.setFieldValue("id", task.id);
@@ -119,6 +124,8 @@ const TodoListBox = () => {
             <EditDialogButton
               name="Edit Task"
               handleClick={() => onEditClick(task)}
+              handleClickDialog={() => setOpen(!open)}
+              isOpen={open}
             >
               <FormComponent
                 titleName={"Edit Task Form"}
