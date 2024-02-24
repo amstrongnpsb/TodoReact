@@ -11,6 +11,15 @@ export const useFetchUsers = () => {
     queryKey: ["fetchUsers"],
   });
 };
+export const useFetchOnlineUsers = () => {
+  return useQuery({
+    queryFn: async () => {
+      const onlineUsers = await axiosInstance.get("/online-users");
+      return onlineUsers;
+    },
+    queryKey: ["fetchOnlineUsers"],
+  });
+};
 export const usePostUser = ({ onSuccess, onError }) => {
   const { toast } = useToast();
   return useMutation({
